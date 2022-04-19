@@ -1,7 +1,7 @@
-#include <iostream>
+#include "../include/OpenMIMO/Test.hpp"
 
 int main()
 {
-    std::cout << "Hello MIMO" << std::endl;
+    Test::Hello();
     return 0;
 }
