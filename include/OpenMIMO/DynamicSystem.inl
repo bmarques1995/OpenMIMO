@@ -19,6 +19,7 @@ inline DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, -1>& matrixA, 
     m_MatrixB = matrixB;
     m_MatrixC = matrixC;
     m_MatrixD.resize(m_MatrixC.rows(), m_MatrixB.cols());
+    m_MatrixD.setZero();
     CheckValidSSDimensions();
     m_Eigenvalues.resize(m_MatrixA.rows(),1);
     m_Eigenvalues = m_MatrixA.eigenvalues();
