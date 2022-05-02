@@ -1,3 +1,6 @@
 [submodule "vendor/Eigen3"]
 	path = vendor/Eigen3
 	url = https://gitlab.com/libeigen/eigen.git
+[submodule "vendor/googletest"]
+	path = vendor/googletest
+	url = https://github.com/google/googletest.git

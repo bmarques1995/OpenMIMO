@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
 
-project(OpenMIMO_SS)
+add_subdirectory("vendor/googletest")
 
-add_executable(${PROJECT_NAME} examples/ss_enter.cpp)
+option(RUN_TESTS "Specifies if the tests will run" ON)
 
-target_include_directories(${PROJECT_NAME} PUBLIC include vendor/Eigen3)
+set(CMAKE_CXX_STANDARD 20)
+
