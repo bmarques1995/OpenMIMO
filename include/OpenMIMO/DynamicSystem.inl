@@ -4,8 +4,8 @@ inline DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, 1>& numerator,
     CheckValidTypes();
     CheckValidTFDimensions(numerator.rows(), denominator.rows());
     SetStatesMatricesFromTF(numerator, denominator);
-    m_Eigenvalues.resize(m_MatrixA.rows(),1);
-    m_Eigenvalues = m_MatrixA.eigenvalues();
+    m_Eigenvalues.resize(m_DynamicMatrix.rows(),1);
+    m_Eigenvalues = m_DynamicMatrix.eigenvalues();
     BuildControllabilityMatrix();
     BuildObservabilityMatrix();
 }
@@ -15,30 +15,30 @@ inline DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, -1>& matrixA, 
 {
     CheckValidTypes();
     //construir exceções para tratativas
-    m_MatrixA = matrixA;
-    m_MatrixB = matrixB;
-    m_MatrixC = matrixC;
-    m_MatrixD.resize(m_MatrixC.rows(), m_MatrixB.cols());
-    m_MatrixD.setZero();
+    m_DynamicMatrix = matrixA;
+    m_InputMatrix = matrixB;
+    m_OutputMatrix = matrixC;
+    m_FeedForwardMatrix.resize(m_OutputMatrix.rows(), m_InputMatrix.cols());
+    m_FeedForwardMatrix.setZero();
     CheckValidSSDimensions();
-    m_Eigenvalues.resize(m_MatrixA.rows(),1);
-    m_Eigenvalues = m_MatrixA.eigenvalues();
+    m_Eigenvalues.resize(m_DynamicMatrix.rows(),1);
+    m_Eigenvalues = m_DynamicMatrix.eigenvalues();
     BuildControllabilityMatrix();
     BuildObservabilityMatrix();
 }
 
 template<typename T>
-inline DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, -1>& matrixA, const Eigen::Matrix<T, -1, -1>& matrixB, const Eigen::Matrix<T, -1, -1>& matrixC, const Eigen::Matrix<T, -1, -1>& matrixD)
+inline DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, -1>& dynamicMatrix, const Eigen::Matrix<T, -1, -1>& inputMatrix, const Eigen::Matrix<T, -1, -1>& outputMatrix, const Eigen::Matrix<T, -1, -1>& feedForwardMatrix)
 {
     CheckValidTypes();
     //construir exceções para tratativas
-    m_MatrixA = matrixA;
-    m_MatrixB = matrixB;
-    m_MatrixC = matrixC;
-    m_MatrixD = matrixD;
+    m_DynamicMatrix = dynamicMatrix;
+    m_InputMatrix = inputMatrix;
+    m_OutputMatrix = outputMatrix;
+    m_FeedForwardMatrix = feedForwardMatrix;
     CheckValidSSDimensions();
-    m_Eigenvalues.resize(m_MatrixA.rows(),1);
-    m_Eigenvalues = m_MatrixA.eigenvalues();
+    m_Eigenvalues.resize(m_DynamicMatrix.rows(),1);
+    m_Eigenvalues = m_DynamicMatrix.eigenvalues();
     BuildControllabilityMatrix();
     BuildObservabilityMatrix();
 }
@@ -47,13 +47,13 @@ template<typename T>
 inline void DynamicSystem<T>::PrintMatrices()
 {
     std::cout << "A: " << "\n";
-    std::cout << m_MatrixA << "\n";
+    std::cout << m_DynamicMatrix << "\n";
     std::cout << "B: " << "\n";
-    std::cout << m_MatrixB << "\n";
+    std::cout << m_InputMatrix << "\n";
     std::cout << "C: " << "\n";
-    std::cout << m_MatrixC << "\n";
+    std::cout << m_OutputMatrix << "\n";
     std::cout << "D: " << "\n";
-    std::cout << m_MatrixD << "\n";
+    std::cout << m_FeedForwardMatrix << "\n";
     std::cout << "Eigenvalues: " << "\n";
     std::cout << m_Eigenvalues << "\n";
     std::cout << "Controllability: " << "\n";
@@ -64,6 +64,78 @@ inline void DynamicSystem<T>::PrintMatrices()
     std::cout << m_ObservabilityMatrix << "\n";
     std::cout << "Observability Rank: " << "\n";
     std::cout << m_ObservabilityMatrix.fullPivLu().rank() << "\n";
+}
+
+template<typename T>
+inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetDynamicMatrix() const
+{
+    return m_DynamicMatrix;
+}
+
+template<typename T>
+inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetInputMatrix() const
+{
+    return m_InputMatrix;
+}
+
+template<typename T>
+inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetOutputMatrix() const
+{
+    return m_OutputMatrix;
+}
+
+template<typename T>
+inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetFeedForwardMatrix() const
+{
+    return m_FeedForwardMatrix;
+}
+
+template<typename T>
+inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetControllabilityMatrix() const
+{
+    return m_ControllabilityMatrix;
+}
+
+template<typename T>
+inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetObservabilityMatrix() const
+{
+    return m_ObservabilityMatrix;
+}
+
+template<typename T>
+inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetEigenvalues() const
+{
+    return m_Eigenvalues;
+}
+
+//private members
+
+template<typename T>
+inline void DynamicSystem<T>::CheckValidTypes()
+{
+    if(!(typeid(T) == typeid(float) || typeid(T) == typeid(double)))
+        throw BadTypeStartException();
+}
+
+template<typename T>
+inline void DynamicSystem<T>::CheckValidTFDimensions(size_t numeratorDegree, size_t denominatorDegree)
+{
+    if(numeratorDegree > denominatorDegree)
+            throw BadNumeratorException(numeratorDegree, denominatorDegree);
+    
+}
+
+template<typename T>
+inline void DynamicSystem<T>::CheckValidSSDimensions()
+{
+    if(m_DynamicMatrix.rows() != m_DynamicMatrix.cols())
+        throw BadDynamicMatrixException(m_DynamicMatrix.rows(), m_DynamicMatrix.cols());
+    if(m_DynamicMatrix.rows() != m_InputMatrix.rows())
+        throw BadInputMatrixException(m_DynamicMatrix.rows(), m_InputMatrix.rows());
+    if(m_DynamicMatrix.cols() != m_OutputMatrix.cols())
+        throw BadOutputMatrixException(m_DynamicMatrix.cols(), m_OutputMatrix.cols());
+    if((m_InputMatrix.cols()!= m_FeedForwardMatrix.cols())||(m_OutputMatrix.rows() != m_FeedForwardMatrix.rows()))
+        throw BadFeedForwardMatrixException(m_OutputMatrix.rows(), m_InputMatrix.cols(), m_FeedForwardMatrix.rows(), m_FeedForwardMatrix.cols());
 }
 
 template<typename T>
@@ -85,60 +157,60 @@ inline void DynamicSystem<T>::MonizeDenominator(Eigen::Matrix<T, -1, 1>& numerat
 }
 
 template<typename T>
-inline void DynamicSystem<T>::DissociateDirectTransferTerm(Eigen::Matrix<T, -1, 1>& numerator, Eigen::Matrix<T, -1, 1>& denominator, T& directTransferTerm)
+inline void DynamicSystem<T>::DissociateFeedForwardTerm(Eigen::Matrix<T, -1, 1>& numerator, Eigen::Matrix<T, -1, 1>& denominator, T& feedForwardTerm)
 {
     if(numerator.rows() == denominator.rows())
     {
-        directTransferTerm = numerator(0) / denominator(0);
+        feedForwardTerm = numerator(0) / denominator(0);
         auto numeratorCopy = numerator;
         numerator.resize((size_t)numerator.rows() - 1, 1);
         for(size_t i = 0; i < (size_t) denominator.rows() - 1; ++i)
-            numerator(i) = numeratorCopy(i+1) - denominator(i+1) * directTransferTerm;
+            numerator(i) = numeratorCopy(i+1) - denominator(i+1) * feedForwardTerm;
     }
 }
 
 template<typename T>
-inline void DynamicSystem<T>::BuildDMatrixFromTF(T directTransferTerm)
+inline void DynamicSystem<T>::BuildFeedForwardMatrixFromTF(T directTransferTerm)
 {
-    m_MatrixD.resize(1,1);
-    m_MatrixD(0,0) = directTransferTerm;
+    m_FeedForwardMatrix.resize(1,1);
+    m_FeedForwardMatrix(0,0) = directTransferTerm;
 }
 
 template<typename T>
-inline void DynamicSystem<T>::BuildAMatrixFromTF(const Eigen::Matrix<T, -1, 1>& denominator)
+inline void DynamicSystem<T>::BuildDynamicMatrixFromTF(const Eigen::Matrix<T, -1, 1>& denominator)
 {
-    m_MatrixA.resize((size_t) denominator.rows() - 1, (size_t) denominator.rows() - 1);
-    m_MatrixA.setZero();
+    m_DynamicMatrix.resize((size_t) denominator.rows() - 1, (size_t) denominator.rows() - 1);
+    m_DynamicMatrix.setZero();
 
-    for(size_t i = 0; i < m_MatrixA.rows() - 1; ++i)
+    for(size_t i = 0; i < m_DynamicMatrix.rows() - 1; ++i)
     {
-        m_MatrixA(i, i +1) = (T)1.0;
+        m_DynamicMatrix(i, i +1) = (T)1.0;
     }
 
     for(size_t i = 0, rowsMatrixA = (size_t)(denominator.rows() - 1); i < rowsMatrixA; ++i)
     {
-        m_MatrixA(rowsMatrixA - 1, i) = (T)-1.0 * denominator(rowsMatrixA - i);
+        m_DynamicMatrix(rowsMatrixA - 1, i) = (T)-1.0 * denominator(rowsMatrixA - i);
     }
 }
 
 template<typename T>
-inline void DynamicSystem<T>::BuildBMatrixFromTF()
+inline void DynamicSystem<T>::BuildInputMatrixFromTF()
 {
-    m_MatrixB.resize(m_MatrixA.rows(),1);
-    m_MatrixB.setZero();
+    m_InputMatrix.resize(m_DynamicMatrix.rows(),1);
+    m_InputMatrix.setZero();
 
-    m_MatrixB(m_MatrixB.rows() -1, 0) = 1.0f;
+    m_InputMatrix(m_InputMatrix.rows() -1, 0) = 1.0f;
 }
 
 template<typename T>
-inline void DynamicSystem<T>::BuildCMatrixFromTF(const Eigen::Matrix<T, -1, 1>& numerator)
+inline void DynamicSystem<T>::BuildOutputMatrixFromTF(const Eigen::Matrix<T, -1, 1>& numerator)
 {
-    m_MatrixC.resize(1, m_MatrixA.rows());
-    m_MatrixC.setZero();
+    m_OutputMatrix.resize(1, m_DynamicMatrix.rows());
+    m_OutputMatrix.setZero();
 
     for(size_t i = 0; i < numerator.rows(); ++i)
     {
-        m_MatrixC(0, i) = numerator(numerator.rows() - i - 1);
+        m_OutputMatrix(0, i) = numerator(numerator.rows() - i - 1);
     }
 }
 
@@ -150,23 +222,23 @@ inline void DynamicSystem<T>::SetStatesMatricesFromTF(const Eigen::Matrix<T, -1,
     T directTransferTerm = (T)0.0;
 
     MonizeDenominator(numeratorCopy, denominatorCopy);
-    DissociateDirectTransferTerm(numeratorCopy, denominatorCopy, directTransferTerm);
+    DissociateFeedForwardTerm(numeratorCopy, denominatorCopy, directTransferTerm);
 
-    BuildDMatrixFromTF(directTransferTerm);
-    BuildAMatrixFromTF(denominatorCopy);
-    BuildBMatrixFromTF();
-    BuildCMatrixFromTF(numeratorCopy);
+    BuildFeedForwardMatrixFromTF(directTransferTerm);
+    BuildDynamicMatrixFromTF(denominatorCopy);
+    BuildInputMatrixFromTF();
+    BuildOutputMatrixFromTF(numeratorCopy);
 }
 
 template<typename T>
 inline void DynamicSystem<T>::BuildControllabilityMatrix()
 {
-    m_ControllabilityMatrix.resize(m_MatrixA.rows(), m_MatrixA.cols() * m_MatrixB.cols());
-    auto controllabilityCol = m_MatrixB;
-    for(size_t i = 0; i < (size_t) m_MatrixA.cols(); ++i)
+    m_ControllabilityMatrix.resize(m_DynamicMatrix.rows(), m_DynamicMatrix.cols() * m_InputMatrix.cols());
+    auto controllabilityCol = m_InputMatrix;
+    for(size_t i = 0; i < (size_t) m_DynamicMatrix.cols(); ++i)
     {
         if(i > 0)
-            controllabilityCol = m_MatrixA * controllabilityCol;
+            controllabilityCol = m_DynamicMatrix * controllabilityCol;
 
         for(size_t j = 0; j < (size_t) controllabilityCol.cols(); ++j)
             for(size_t k = 0; k < (size_t) controllabilityCol.rows(); ++k)
@@ -177,13 +249,13 @@ inline void DynamicSystem<T>::BuildControllabilityMatrix()
 template<typename T>
 inline void DynamicSystem<T>::BuildObservabilityMatrix()
 {
-    m_ObservabilityMatrix.resize(m_MatrixA.rows() * m_MatrixC.rows(), m_MatrixA.cols());
-    auto observabilityRow = m_MatrixC;
+    m_ObservabilityMatrix.resize(m_DynamicMatrix.rows() * m_OutputMatrix.rows(), m_DynamicMatrix.cols());
+    auto observabilityRow = m_OutputMatrix;
 
-    for(size_t i = 0; i < (size_t) m_MatrixA.rows(); ++i)
+    for(size_t i = 0; i < (size_t) m_DynamicMatrix.rows(); ++i)
     {
         if(i > 0)
-            observabilityRow = observabilityRow * m_MatrixA;
+            observabilityRow = observabilityRow * m_DynamicMatrix;
         for(size_t j = 0; j < (size_t) observabilityRow.rows(); ++j)
             for(size_t k = 0; k < (size_t) observabilityRow.cols(); ++k)
                 m_ObservabilityMatrix(i*observabilityRow.rows() + j,k) = observabilityRow(j,k); 
