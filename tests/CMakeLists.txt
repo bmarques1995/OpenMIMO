@@ -4,7 +4,7 @@ set(MyProjectName TestSample)
 
 project(${MyProjectName} C CXX)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 
 enable_testing()
 
@@ -16,7 +16,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ../include ../vendor/Eigen3)
 
 target_link_libraries(
     ${MyProjectName} 
-    PUBLIC 
+    PRIVATE 
     gtest_main
     gtest
     gmock_main
