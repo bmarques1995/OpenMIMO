@@ -182,7 +182,7 @@ inline void DynamicSystem<T>::BuildDynamicMatrixFromTF(const Eigen::Matrix<T, -1
     m_DynamicMatrix.resize((size_t) denominator.rows() - 1, (size_t) denominator.rows() - 1);
     m_DynamicMatrix.setZero();
 
-    for(size_t i = 0; i < m_DynamicMatrix.rows() - 1; ++i)
+    for(size_t i = 0; i < (size_t)m_DynamicMatrix.rows() - 1; ++i)
     {
         m_DynamicMatrix(i, i +1) = (T)1.0;
     }
@@ -208,7 +208,7 @@ inline void DynamicSystem<T>::BuildOutputMatrixFromTF(const Eigen::Matrix<T, -1,
     m_OutputMatrix.resize(1, m_DynamicMatrix.rows());
     m_OutputMatrix.setZero();
 
-    for(size_t i = 0; i < numerator.rows(); ++i)
+    for(size_t i = 0; i < (size_t)numerator.rows(); ++i)
     {
         m_OutputMatrix(0, i) = numerator(numerator.rows() - i - 1);
     }
