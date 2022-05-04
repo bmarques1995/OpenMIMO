@@ -4,107 +4,47 @@
 
 TEST(DynamicSystem, NumeratorDimensionError)
 {
-    DynamicSystem<double> *dynamicSystem;
     Eigen::VectorXd tf_numerator(6);
     Eigen::VectorXd tf_denominator(5);
-    ASSERT_THROW({
-        try
-        {
-            dynamicSystem = new DynamicSystem(tf_numerator, tf_denominator);
-        }
-        catch( const BadNumeratorException& e )
-        {
-            throw;
-        }
-    }, BadNumeratorException);
+    ASSERT_THROW(new DynamicSystem<double>(tf_numerator, tf_denominator), BadNumeratorException);
 }
 
 TEST(DynamicSystem, DynamicMatrixDimensionError)
-{
-    DynamicSystem<double> *dynamicSystem;
-    
+{   
     Eigen::MatrixXd dynamicMatrix(3,4);
     Eigen::MatrixXd inputMatrix;
     Eigen::MatrixXd outputMatrix;
-    Eigen::MatrixXd feedForwardMatrix;
-
-    Eigen::VectorXd tf_denominator(5);
-    ASSERT_THROW({
-        try
-        {
-            dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
-        }
-        catch( const BadDynamicMatrixException& e )
-        {
-            throw;
-        }
-    }, BadDynamicMatrixException);
+    
+    ASSERT_THROW(new DynamicSystem<double>(dynamicMatrix, inputMatrix, outputMatrix), BadDynamicMatrixException);
 }
 
 TEST(DynamicSystem, InputMatrixDimensionError)
-{
-    DynamicSystem<double> *dynamicSystem;
-    
+{   
     Eigen::MatrixXd dynamicMatrix(4,4);
     Eigen::MatrixXd inputMatrix(1,4);
     Eigen::MatrixXd outputMatrix;
-    Eigen::MatrixXd feedForwardMatrix;
 
-    Eigen::VectorXd tf_denominator(5);
-    ASSERT_THROW({
-        try
-        {
-            dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
-        }
-        catch( const BadInputMatrixException& e )
-        {
-            throw;
-        }
-    }, BadInputMatrixException);
+    ASSERT_THROW(new DynamicSystem<double>(dynamicMatrix, inputMatrix, outputMatrix), BadInputMatrixException);
 }
 
 TEST(DynamicSystem, OutputMatrixDimensionError)
 {
-    DynamicSystem<double> *dynamicSystem;
-    
     Eigen::MatrixXd dynamicMatrix(4,4);
     Eigen::MatrixXd inputMatrix(4,1);
     Eigen::MatrixXd outputMatrix(4,1);
-    Eigen::MatrixXd feedForwardMatrix;
 
-    Eigen::VectorXd tf_denominator(5);
-    ASSERT_THROW({
-        try
-        {
-            dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
-        }
-        catch( const BadOutputMatrixException& e )
-        {
-            throw;
-        }
-    }, BadOutputMatrixException);
+    ASSERT_THROW(new DynamicSystem<double>(dynamicMatrix, inputMatrix, outputMatrix), BadOutputMatrixException);
 }
 
 TEST(DynamicSystem, FeedForwardMatrixDimensionError)
 {
-    DynamicSystem<double> *dynamicSystem;
     
     Eigen::MatrixXd dynamicMatrix(4,4);
     Eigen::MatrixXd inputMatrix(4,1);
     Eigen::MatrixXd outputMatrix(2,4);
     Eigen::MatrixXd feedForwardMatrix(1,2);
 
-    Eigen::VectorXd tf_denominator(5);
-    ASSERT_THROW({
-        try
-        {
-            dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix, feedForwardMatrix);
-        }
-        catch( const BadFeedForwardMatrixException& e)
-        {
-            throw;
-        }
-    }, BadFeedForwardMatrixException);
+    ASSERT_THROW(new DynamicSystem<double>(dynamicMatrix, inputMatrix, outputMatrix, feedForwardMatrix), BadFeedForwardMatrixException);
 }
 
 //Melhorar, adicionar numerador de ordem 5
@@ -120,8 +60,6 @@ TEST(DynamicSystem, TransferFunctionToSpaceOfStates)
     Eigen::MatrixXd inputMatrix;
     Eigen::MatrixXd outputMatrix;
     Eigen::MatrixXd feedForwardMatrix;
-
-    std::array<bool, 4> passed = {false, false, false, false};
 
     dynamicMatrix.resize(4,4);
     dynamicMatrix << 0, 1, 0, 0,
@@ -141,20 +79,15 @@ TEST(DynamicSystem, TransferFunctionToSpaceOfStates)
     try
     {
         dynamicSystem = new DynamicSystem(tf_numerator, tf_denominator);
-        passed[0] = dynamicMatrix.isApprox(dynamicSystem->GetDynamicMatrix(), .0001);
-        passed[1] = inputMatrix.isApprox(dynamicSystem->GetInputMatrix(), .0001);
-        passed[2] = outputMatrix.isApprox(dynamicSystem->GetOutputMatrix(), .0001);
-        passed[3] = feedForwardMatrix.isApprox(dynamicSystem->GetFeedForwardMatrix(),.0001);
+        ASSERT_TRUE(dynamicMatrix.isApprox(dynamicSystem->GetDynamicMatrix(), .0001));
+        ASSERT_TRUE(inputMatrix.isApprox(dynamicSystem->GetInputMatrix(), .0001));
+        ASSERT_TRUE(outputMatrix.isApprox(dynamicSystem->GetOutputMatrix(), .0001));
+        ASSERT_TRUE(feedForwardMatrix.isApprox(dynamicSystem->GetFeedForwardMatrix(),.0001));
     }
     catch(...)
     {
+        ASSERT_TRUE(false);
     }
-
-    for (size_t i = 0; i < passed.size(); i++)
-    {
-        ASSERT_TRUE(passed[i]);
-    }
-
 }
 
 TEST(DynamicSystem, ExpectedControllabilityMatrix)
@@ -182,20 +115,17 @@ TEST(DynamicSystem, ExpectedControllabilityMatrix)
     controllabilityMatrix << 2, 5, 66, 80, 1032, 1475,
     4, 7, 68, 116, 1378, 1963,
     6, 5, 80, 105, 1376, 1900;
-    
-    bool passed = false;
 
     try
     {
         dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
-        passed = controllabilityMatrix.isApprox(dynamicSystem->GetControllabilityMatrix(), .0001);
+        ASSERT_TRUE(controllabilityMatrix.isApprox(dynamicSystem->GetControllabilityMatrix(), .0001));
     }
 
     catch(...)
     {
+        ASSERT_TRUE(false);
     }
-
-    ASSERT_TRUE(passed);
 }
 
 TEST(DynamicSystem, ExpectedObservabilityMatrix)
@@ -225,20 +155,17 @@ TEST(DynamicSystem, ExpectedObservabilityMatrix)
     95, 127, 135,
     766, 1028, 958,
     1524, 1920, 1873;
-    
-    bool passed = false;
 
     try
     {
         dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
-        passed = observabilityMatrix.isApprox(dynamicSystem->GetObservabilityMatrix(), .0001);
+        ASSERT_TRUE(observabilityMatrix.isApprox(dynamicSystem->GetObservabilityMatrix(), .0001));
     }
 
     catch(...)
     {
-    }
-
-    ASSERT_TRUE(passed);
+        ASSERT_TRUE(false);
+    } 
 }
 
 int main(int argc, char **argv)
