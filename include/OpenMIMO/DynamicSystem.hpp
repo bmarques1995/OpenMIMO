@@ -23,7 +23,7 @@ public:
     const Eigen::Matrix<T, -1, -1>& GetFeedForwardMatrix() const;
     const Eigen::Matrix<T, -1, -1>& GetControllabilityMatrix() const;
     const Eigen::Matrix<T, -1, -1>& GetObservabilityMatrix() const;
-    const Eigen::Matrix<T, -1, -1>& GetEigenvalues() const;
+    const Eigen::Matrix<std::complex<T>, -1, 1>& GetEigenvalues() const;
 private:
 
     void CheckValidTypes();

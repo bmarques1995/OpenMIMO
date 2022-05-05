@@ -78,8 +78,8 @@ private:
 class BadInputMatrixException : public DynamicSystemException
 {
 public:
-    BadInputMatrixException(size_t stateMatrixRows, size_t inputMatrixRows) :
-        m_DynamicMatrixRows(stateMatrixRows), m_InputMatrixRows(inputMatrixRows)
+    BadInputMatrixException(size_t dynamicMatrixRows, size_t inputMatrixRows) :
+        m_DynamicMatrixRows(dynamicMatrixRows), m_InputMatrixRows(inputMatrixRows)
     {
 
     }
@@ -101,8 +101,8 @@ private:
 class BadOutputMatrixException : public DynamicSystemException
 {
 public:
-    BadOutputMatrixException(size_t stateMatrixCols, size_t outputMatrixCols) :
-        m_DynamicMatrixCols(stateMatrixCols), m_OutputMatrixCols(outputMatrixCols)
+    BadOutputMatrixException(size_t dynamicMatrixCols, size_t outputMatrixCols) :
+        m_DynamicMatrixCols(dynamicMatrixCols), m_OutputMatrixCols(outputMatrixCols)
     {
 
     }
@@ -124,9 +124,9 @@ private:
 class BadFeedForwardMatrixException : public DynamicSystemException
 {
 public:
-    BadFeedForwardMatrixException(size_t outputMatrixRows, size_t inputMatrixCols, size_t directTransferMatrixRows, size_t directTransferMatrixCols) :
+    BadFeedForwardMatrixException(size_t outputMatrixRows, size_t inputMatrixCols, size_t feedForwardMatrixRows, size_t feedForwardMatrixCols) :
         m_OutputMatrixRows(outputMatrixRows), m_InputMatrixCols(inputMatrixCols),
-        m_FeedForwardMatrixRows(directTransferMatrixRows), m_FeedForwardMatrixCols(directTransferMatrixCols)
+        m_FeedForwardMatrixRows(feedForwardMatrixRows), m_FeedForwardMatrixCols(feedForwardMatrixCols)
     {
 
     }

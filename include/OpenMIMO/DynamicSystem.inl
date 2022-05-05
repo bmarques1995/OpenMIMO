@@ -103,7 +103,7 @@ inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetObservabilityMatrix(
 }
 
 template<typename T>
-inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetEigenvalues() const
+inline const Eigen::Matrix<std::complex<T>, -1, 1>& DynamicSystem<T>::GetEigenvalues() const
 {
     return m_Eigenvalues;
 }
