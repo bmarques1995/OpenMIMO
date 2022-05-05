@@ -18,10 +18,22 @@ To add OpenMIMO to your project, only include ./include and Eigen, that is alrea
 
 # Running unit tests
 
-OpenMIMO uses **CMake 3.14 or later** to generate the test project, currently only works on linux distros, but will be added future support to MSVC. To generate the project run: 
+OpenMIMO uses **CMake 3.20 or later** to generate the test project, currently only works on linux distros, but will be added future support to MSVC. To generate the project run: 
 
 ```
 cmake -S ./test -B <Build Directory>
 ```
 
 in the root directory, go to build directory and run Make(Linux) or open the generated Solution(Windows, MAC).
+
+You can view the code coverage with gcov and gcovr, to get the code coverage run the tests program and in the make directory run:
+
+```
+gcovr -r <SourceRelativeDir> . --html --html-details -o <OutputHTMLFile>
+```
+
+to install gcov and gcovr just run:
+
+```
+sudo <package manager> gcov gcovr -y
+```
