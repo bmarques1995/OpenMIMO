@@ -24,6 +24,10 @@ OpenMIMO uses **CMake 3.20 or later** to generate the test project, currently on
 cmake -S ./test -B <Build Directory>
 ```
 
+## Running Code Coverage 
+
+### Linux Distros
+
 in the root directory, go to build directory and run Make(Linux) or open the generated Solution(Windows, MAC).
 
 You can view the code coverage with gcov and gcovr, to get the code coverage run the tests program and in the make directory run:
