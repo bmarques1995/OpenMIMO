@@ -8,10 +8,7 @@ enable_testing()
 
 add_subdirectory(../vendor/googletest binary_dir)
 
-add_library(OpenMIMO INTERFACE ../include/OpenMIMO/DynamicSystem.hpp ../include/OpenMIMO/DynamicSystem.inl ../include/OpenMIMO/DynamicSystemExceptions.hpp)
-add_dependencies(OpenMIMO gtest gtest_main)
-
-add_executable(${MyProjectName} DynamicSystem.cpp)
+add_executable(${MyProjectName} DynamicSystemTests.cpp DynamicSystemExceptionsTests.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ../include ../vendor/Eigen3)
 

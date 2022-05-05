@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <OpenMIMO/DynamicSystem.hpp>
+#include <OpenMIMO/utils/ComplexSortClassifier.hpp>
 #include <iostream>
 
 TEST(DynamicSystem, NumeratorDimensionError)
@@ -8,6 +9,16 @@ TEST(DynamicSystem, NumeratorDimensionError)
     Eigen::VectorXd tf_denominator(5);
     ASSERT_THROW(new DynamicSystem<double>(tf_numerator, tf_denominator), BadNumeratorException);
 }
+
+/*
+TEST(DynamicSystem, TypeInsertionError)
+{   
+    Eigen::MatrixXd dynamicMatrix(3,4);
+    Eigen::MatrixXd inputMatrix;
+    Eigen::MatrixXd outputMatrix;
+    ASSERT_THROW(new DynamicSystem<std::complex<float>>(dynamicMatrix, inputMatrix, outputMatrix), BadTypeStartException);
+}
+*/
 
 TEST(DynamicSystem, DynamicMatrixDimensionError)
 {   
@@ -83,6 +94,7 @@ TEST(DynamicSystem, TransferFunctionToSpaceOfStates)
         ASSERT_TRUE(inputMatrix.isApprox(dynamicSystem->GetInputMatrix(), .0001));
         ASSERT_TRUE(outputMatrix.isApprox(dynamicSystem->GetOutputMatrix(), .0001));
         ASSERT_TRUE(feedForwardMatrix.isApprox(dynamicSystem->GetFeedForwardMatrix(),.0001));
+        delete dynamicSystem;
     }
     catch(...)
     {
@@ -120,6 +132,7 @@ TEST(DynamicSystem, ExpectedControllabilityMatrix)
     {
         dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
         ASSERT_TRUE(controllabilityMatrix.isApprox(dynamicSystem->GetControllabilityMatrix(), .0001));
+        delete dynamicSystem;
     }
 
     catch(...)
@@ -135,6 +148,7 @@ TEST(DynamicSystem, ExpectedObservabilityMatrix)
     Eigen::MatrixXd dynamicMatrix;
     Eigen::MatrixXd inputMatrix;
     Eigen::MatrixXd outputMatrix;
+    Eigen::MatrixXd feedforwardMatrix(2,1);
 
     Eigen::MatrixXd observabilityMatrix(6, 3);
 
@@ -158,8 +172,9 @@ TEST(DynamicSystem, ExpectedObservabilityMatrix)
 
     try
     {
-        dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
+        dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix, feedforwardMatrix);
         ASSERT_TRUE(observabilityMatrix.isApprox(dynamicSystem->GetObservabilityMatrix(), .0001));
+        delete dynamicSystem;
     }
 
     catch(...)
@@ -168,8 +183,33 @@ TEST(DynamicSystem, ExpectedObservabilityMatrix)
     } 
 }
 
-int main(int argc, char **argv)
+TEST(DynamicSystem, ExpectedEigenvalues)
 {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    DynamicSystem<double> *dynamicSystem;
+    Eigen::MatrixXd dynamicMatrix(3,3);
+    Eigen::MatrixXd inputMatrix(3,1);
+    Eigen::MatrixXd outputMatrix(1,3);
+
+    dynamicMatrix << 0, 1, 0,
+    0, 0, 1,
+    -68, -49, -12;
+
+    Eigen::VectorXcd expectedEigenvalues(3);
+
+    expectedEigenvalues << std::complex<double>(-4.0,1.0),std::complex<double>(-4.0,0),std::complex<double>(-4.0,-1.0);
+
+    try
+    {
+        dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
+        std::sort(expectedEigenvalues.begin(), expectedEigenvalues.end(), ComplexGreater<double>);
+        auto eigenvalues = dynamicSystem->GetEigenvalues();
+        std::sort(eigenvalues.begin(), eigenvalues.end(), ComplexGreater<double>);
+        ASSERT_TRUE(expectedEigenvalues.isApprox(eigenvalues,.0001));
+        delete dynamicSystem;
+    }
+
+    catch(...)
+    {
+        ASSERT_TRUE(false);
+    } 
 }
