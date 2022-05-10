@@ -19,8 +19,6 @@ target_link_libraries(
     gtest
     gmock_main
     gmock
-    INTERFACE
-    OpenMIMO
 )
 
 add_test(
