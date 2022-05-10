@@ -241,8 +241,7 @@ inline void DynamicSystem<T>::BuildControllabilityMatrix()
             controllabilityCol = m_DynamicMatrix * controllabilityCol;
 
         for(size_t j = 0; j < (size_t) controllabilityCol.cols(); ++j)
-            for(size_t k = 0; k < (size_t) controllabilityCol.rows(); ++k)
-                m_ControllabilityMatrix(k,i*controllabilityCol.cols()+j) = controllabilityCol(k,j); 
+            m_ControllabilityMatrix.col(j + i*(size_t) controllabilityCol.cols()) = controllabilityCol.col(j); 
     }
 }
 
@@ -257,7 +256,8 @@ inline void DynamicSystem<T>::BuildObservabilityMatrix()
         if(i > 0)
             observabilityRow = observabilityRow * m_DynamicMatrix;
         for(size_t j = 0; j < (size_t) observabilityRow.rows(); ++j)
-            for(size_t k = 0; k < (size_t) observabilityRow.cols(); ++k)
-                m_ObservabilityMatrix(i*observabilityRow.rows() + j,k) = observabilityRow(j,k); 
+            m_ObservabilityMatrix.row(j + i*(size_t) observabilityRow.rows()) = observabilityRow.row(j);
+            //for(size_t k = 0; k < (size_t) observabilityRow.cols(); ++k)
+                //m_ObservabilityMatrix(i*observabilityRow.rows() + j,k) = observabilityRow(j,k); 
     }
 }
