@@ -8,7 +8,14 @@ enable_testing()
 
 add_subdirectory(../vendor/googletest binary_dir)
 
-add_executable(${MyProjectName} DynamicSystemTests.cpp DynamicSystemExceptionsTests.cpp)
+file(GLOB_RECURSE OPENMIMO_TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cpp")
+
+foreach(X IN LISTS OPENMIMO_TEST_SOURCES)
+    message(${X})
+    message(" ")
+endforeach()
+
+add_executable(${MyProjectName} ${OPENMIMO_TEST_SOURCES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ../include ../vendor/Eigen3)
 
