@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
 
-add_subdirectory("vendor/googletest")
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-option(RUN_TESTS "Specifies if the tests will run" ON)
-
-set(CMAKE_CXX_STANDARD 17)
-
+include(OpenMIMOPlot)

@@ -1,23 +1,20 @@
-cmake_minimum_required(VERSION 3.20)
-
 set(MyProjectName TestOpenMIMO)
 project(${MyProjectName} C CXX)
 set(CMAKE_CXX_STANDARD 17)
 
 enable_testing()
 
-add_subdirectory(../vendor/googletest binary_dir)
+add_subdirectory(./vendor/googletest)
 
-file(GLOB_RECURSE OPENMIMO_TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cpp")
+file(GLOB_RECURSE OPENMIMO_TEST_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "tests/*.cpp")
 
 foreach(X IN LISTS OPENMIMO_TEST_SOURCES)
     message(${X})
-    message(" ")
 endforeach()
 
 add_executable(${MyProjectName} ${OPENMIMO_TEST_SOURCES})
 
-target_include_directories(${PROJECT_NAME} PUBLIC ../include ../vendor/Eigen3)
+target_include_directories(${PROJECT_NAME} PUBLIC ./include ./vendor/Eigen3)
 
 target_link_libraries(
     ${MyProjectName}
@@ -33,7 +30,6 @@ add_test(
     COMMAND ${MyProjectName}
 )
 
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 if (CMAKE_COMPILER_IS_GNUCXX)
     include(CodeCoverage)
     append_coverage_compiler_flags()
