@@ -10,7 +10,10 @@ add_subdirectory(./vendor/glad)
 include(imgui)
 include(implot)
 
-add_executable(OpenMIMOPlot ./OpenMIMOPlot/entry.cpp)
+file(GLOB_RECURSE PLOT_MIMO_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "OpenMIMOPlot/*.cpp")
+file(GLOB_RECURSE PLOT_MIMO_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "OpenMIMOPlot/*.hpp")
 
-target_include_directories(OpenMIMOPlot PUBLIC IMPLOT_INCLUDE_DIR IMGUI_INCLUDE_DIR ./vendor/glfw/include ./vendor/glad/include)
+add_executable(OpenMIMOPlot ${PLOT_MIMO_HEADERS} ${PLOT_MIMO_SOURCES})
+
+target_include_directories(OpenMIMOPlot PRIVATE ./OpenMIMOPlot IMPLOT_INCLUDE_DIR IMGUI_INCLUDE_DIR ./vendor/glfw/include ./vendor/glad/include)
 target_link_libraries(OpenMIMOPlot PRIVATE implot imgui glad glfw)
