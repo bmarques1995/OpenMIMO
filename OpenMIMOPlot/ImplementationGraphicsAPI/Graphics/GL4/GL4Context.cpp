@@ -30,3 +30,7 @@ std::any GL4Context::GetComponentConstructor() const
 {
     return m_GLSLVersion.data();
 }
+
+void GL4Context::Present()
+{
+}

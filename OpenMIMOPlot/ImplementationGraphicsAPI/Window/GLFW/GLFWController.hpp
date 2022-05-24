@@ -27,6 +27,8 @@ public:
     virtual std::any GetNativeWindow() const override;
 
     virtual void Update() override;
+
+    virtual void Present() override;
 };
 
 #endif

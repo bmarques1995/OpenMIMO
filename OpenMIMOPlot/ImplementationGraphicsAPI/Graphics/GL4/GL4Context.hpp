@@ -20,6 +20,7 @@ public:
     virtual void Update() override;
     virtual void SetClearColor(float x, float y, float z, float w) override;
     virtual std::any GetComponentConstructor() const override;
+    virtual void Present() override;
 };
 
 #endif

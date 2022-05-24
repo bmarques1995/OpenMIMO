@@ -36,5 +36,6 @@ void Application::Run()
         m_ImGUILayer->BeginFrame();
         m_ImGUILayer->OnUpdate();
         m_ImGUILayer->EndFrame();
+        m_WindowController->Present();
     }
 }

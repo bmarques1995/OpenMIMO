@@ -16,6 +16,7 @@ public:
     //~GraphicsContext();
     virtual void Update() = 0;
     virtual void SetClearColor(float x, float y, float z, float w = 1.0f) = 0;
+    virtual void Present() = 0;
     virtual std::any GetComponentConstructor() const = 0;
 };
 

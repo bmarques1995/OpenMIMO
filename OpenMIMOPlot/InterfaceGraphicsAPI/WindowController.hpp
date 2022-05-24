@@ -31,6 +31,8 @@ public:
     virtual std::any GetNativeWindow() const = 0;
 
     virtual void Update() = 0;
+
+    virtual void Present() = 0;
 };
 
 /*static void glfw_error_callback(int error, const char* description)

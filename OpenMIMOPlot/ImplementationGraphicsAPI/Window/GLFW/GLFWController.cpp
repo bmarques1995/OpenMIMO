@@ -54,8 +54,12 @@ void GLFWController::Update()
 {
     int width, height;
     glfwPollEvents();
-    glfwSwapBuffers(m_Window);
     glfwGetFramebufferSize(m_Window, &width, &height);
     m_Width = width;
     m_Height = height;
+}
+
+void GLFWController::Present()
+{
+    glfwSwapBuffers(m_Window);
 }
