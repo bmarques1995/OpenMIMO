@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/include",
+                "${workspaceFolder}/OpenMIMOPlot",
                 "${workspaceFolder}/vendor/Eigen3",
                 "${workspaceFolder}/vendor/googletest/googlemock/include",
                 "${workspaceFolder}/vendor/googletest/googletest/include"

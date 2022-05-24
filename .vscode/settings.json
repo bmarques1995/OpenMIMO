@@ -69,7 +69,12 @@
         "nnls": "cpp",
         "any": "cpp",
         "forward_list": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

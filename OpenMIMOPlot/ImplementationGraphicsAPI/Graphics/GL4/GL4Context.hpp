@@ -5,7 +5,7 @@
 #include "InterfaceGraphicsAPI/WindowController.hpp"
 
 #include <string>
-#include <glad/gl.h>
+#include <GLSafeInclude.hpp>
 
 class GL4Context : public GraphicsContext
 {

@@ -10,6 +10,7 @@
 #include "Core/ImGUILayer.hpp"
 #include "Core/ImPlotLayer.hpp"
 #include "ImplementationGraphicsAPI/Graphics/GL4/GL4Context.hpp"
+#include "GraphicsInjector.hpp"
 
 
 class Application
@@ -20,6 +21,7 @@ private:
     ImGUILayer* m_ImGUILayer;
     ImPlotLayer* m_ImPlotLayer;
 
+    GraphicsInjector* m_GraphicsInjector;
     
 public:
     Application();
