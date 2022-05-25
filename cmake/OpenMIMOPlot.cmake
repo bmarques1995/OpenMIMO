@@ -16,6 +16,9 @@ file(GLOB_RECURSE PLOT_MIMO_CORE_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "O
 file(GLOB_RECURSE PLOT_MIMO_INTERFACE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "OpenMIMOPlot/InterfaceGraphicsAPI/*.cpp")
 file(GLOB_RECURSE PLOT_MIMO_INTERFACE_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "OpenMIMOPlot/InterfaceGraphicsAPI/*.hpp")
 
+file(GLOB_RECURSE PLOT_MIMO_LAYERS_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "OpenMIMOPlot/PlotLayers/*.cpp")
+file(GLOB_RECURSE PLOT_MIMO_LAYERS_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "OpenMIMOPlot/PlotLayers/*.hpp")
+
 set (WindowSources)
 set (WindowHeaders)
 set (GraphicsSources)
@@ -68,8 +71,27 @@ foreach(api IN LISTS ImguiCombinedAPIS)
     endif()
 endforeach()
 
-set(PLOT_MIMO_SOURCES ${PLOT_MIMO_CORE_SOURCES} ${PLOT_MIMO_INTERFACE_SOURCES} ${WindowSources} ${GraphicsSources} ${ImGUISources} OpenMIMOPlot/entry.cpp)
-set(PLOT_MIMO_HEADERS ${PLOT_MIMO_CORE_HEADERS} ${PLOT_MIMO_INTERFACE_HEADERS} ${WindowHeaders} ${GraphicsHeaders} ${ImGUIHeaders} OpenMIMOPlot/GLSafeInclude.hpp)
+set(PLOT_MIMO_SOURCES 
+    
+    ${PLOT_MIMO_CORE_SOURCES}
+    ${PLOT_MIMO_LAYERS_SOURCES}
+    ${PLOT_MIMO_INTERFACE_SOURCES}
+    ${WindowSources}
+    ${GraphicsSources}
+    ${ImGUISources} 
+    OpenMIMOPlot/entry.cpp 
+    OpenMIMOPlot/AppContainer.cpp
+)
+set(PLOT_MIMO_HEADERS
+    ${PLOT_MIMO_CORE_HEADERS}
+    ${PLOT_MIMO_LAYERS_HEADERS}
+    ${PLOT_MIMO_INTERFACE_HEADERS}
+    ${WindowHeaders}
+    ${GraphicsHeaders}
+    ${ImGUIHeaders} 
+    OpenMIMOPlot/GLSafeInclude.hpp
+    OpenMIMOPlot/AppContainer.hpp
+)
 
 if(WIN32)
     add_compile_definitions(WINDOWS_PLOT)

@@ -11,7 +11,7 @@
 #include "Core/ImPlotLayer.hpp"
 #include "ImplementationGraphicsAPI/Graphics/GL4/GL4Context.hpp"
 #include "Core/GraphicsInjector.hpp"
-
+#include "Core/LayerStack.hpp"
 
 class Application
 {
@@ -22,11 +22,14 @@ private:
     ImPlotLayer* m_ImPlotLayer;
 
     GraphicsInjector* m_GraphicsInjector;
-    
+    LayerStack m_LayerStack;
 public:
     Application();
     ~Application();
     void Run();
+
+    void PushLayer(Layer* layer);
+	void PushOverlay(Layer* overlay);
 };
 
 #endif

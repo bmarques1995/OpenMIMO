@@ -23,6 +23,8 @@ GraphicsInjector::GraphicsInjector()
         GraphicsStartup startup(controller, context, layer);
         return startup;
     };
+
+    currentGraphicsPair = "WIN32" "D3D11";
 }
 
 GraphicsInjector::~GraphicsInjector()

@@ -8,15 +8,6 @@
 GLFWGL4ImGUILayer::GLFWGL4ImGUILayer(GLFWwindow* windowPtr, std::string_view layerName) :
     ImGUILayer(layerName), m_WindowPtr(windowPtr)
 {
-    poles[0] = { -3,0 };
-    poles[1] = { -5,2 };
-    poles[2] = { -5,-2 };
-
-    for (size_t i = 0; i < 3; i++)
-    {
-        real_poles[i] = poles[i].real();
-        imag_poles[i] = poles[i].imag();
-    }
 }
 
 GLFWGL4ImGUILayer::~GLFWGL4ImGUILayer()
@@ -49,19 +40,6 @@ void GLFWGL4ImGUILayer::OnDetach()
 
 void GLFWGL4ImGUILayer::OnUpdate()
 {
-    //Only for tests will be removed from here
-    ImPlot::ShowStyleEditor();
-
-    ImGui::Begin("My Window");
-    if (ImPlot::BeginPlot("My Plot")) {
-        ImPlot::SetupAxesLimits(8,-8,-4.5,4.5);
-        ImPlot::PlotScatter<double>("Data 1", real_poles, imag_poles, 3);
-        ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
-        ImPlot::SetNextMarkerStyle(ImPlotMarker_Square, 6, ImPlot::GetColormapColor(1), IMPLOT_AUTO, ImPlot::GetColormapColor(25));
-        ImPlot::PopStyleVar();
-        ImPlot::EndPlot();
-    }
-    ImGui::End();
 }
 
 void GLFWGL4ImGUILayer::BeginFrame()

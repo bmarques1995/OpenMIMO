@@ -10,11 +10,6 @@ class GLFWGL4ImGUILayer : public ImGUILayer
 private:
     GLFWwindow* m_WindowPtr;
     
-    std::complex<double> poles[3];
-    
-    double real_poles[3];
-    double imag_poles[3];
-    int bar_data[11] = { 5,9,7,3,14,25,63,17,81,19,105 };
 public:
     GLFWGL4ImGUILayer(GLFWwindow* windowPtr, std::string_view layerName = "ImGUIDebugLayer");
     ~GLFWGL4ImGUILayer();

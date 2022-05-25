@@ -41,12 +41,24 @@ Application::~Application()
 void Application::Run()
 {
     while (!m_WindowController->ShouldClose())
-    {
+    {		
         m_WindowController->Update();
         m_GraphicsContext->Update();
         m_ImGUILayer->BeginFrame();
+        for (Layer* layer : m_LayerStack)
+			layer->OnUpdate();
         m_ImGUILayer->OnUpdate();
         m_ImGUILayer->EndFrame();
         m_WindowController->Present();
     }
+}
+
+void Application::PushLayer(Layer* layer)
+{
+    m_LayerStack.PushLayer(layer);
+}
+
+void Application::PushOverlay(Layer* overlay)
+{
+    m_LayerStack.PushOverlay(overlay);
 }

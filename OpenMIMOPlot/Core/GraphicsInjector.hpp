@@ -8,6 +8,8 @@
 #include "InterfaceGraphicsAPI/WindowController.hpp"
 #include "InterfaceGraphicsAPI/GraphicsContext.hpp"
 
+#pragma region Structure
+
 struct GraphicsStartup
 {
     ImGUILayer* Layer;
@@ -20,6 +22,8 @@ struct GraphicsStartup
         Layer(layer), Controller(controller), Context(context) 
     {}
 };
+
+#pragma endregion
 
 class GraphicsInjector
 {
