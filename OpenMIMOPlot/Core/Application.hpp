@@ -10,7 +10,7 @@
 #include "Core/ImGUILayer.hpp"
 #include "Core/ImPlotLayer.hpp"
 #include "ImplementationGraphicsAPI/Graphics/GL4/GL4Context.hpp"
-#include "GraphicsInjector.hpp"
+#include "Core/GraphicsInjector.hpp"
 
 
 class Application
