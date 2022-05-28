@@ -5,17 +5,17 @@
 #include "imgui.h"
 #include "implot.h"
 
-GLFWGL4ImGUILayer::GLFWGL4ImGUILayer(GLFWwindow* windowPtr, std::string_view layerName) :
+OpenMIMO::GLFWGL4ImGUILayer::GLFWGL4ImGUILayer(GLFWwindow* windowPtr, std::string_view layerName) :
     ImGUILayer(layerName), m_WindowPtr(windowPtr)
 {
 }
 
-GLFWGL4ImGUILayer::~GLFWGL4ImGUILayer()
+OpenMIMO::GLFWGL4ImGUILayer::~GLFWGL4ImGUILayer()
 {
     m_WindowPtr = nullptr;
 }
 
-void GLFWGL4ImGUILayer::OnAttach()
+void OpenMIMO::GLFWGL4ImGUILayer::OnAttach()
 {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -31,25 +31,25 @@ void GLFWGL4ImGUILayer::OnAttach()
     ImGui_ImplOpenGL3_Init();
 }
 
-void GLFWGL4ImGUILayer::OnDetach()
+void OpenMIMO::GLFWGL4ImGUILayer::OnDetach()
 {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
 
-void GLFWGL4ImGUILayer::OnUpdate()
+void OpenMIMO::GLFWGL4ImGUILayer::OnUpdate()
 {
 }
 
-void GLFWGL4ImGUILayer::BeginFrame()
+void OpenMIMO::GLFWGL4ImGUILayer::BeginFrame()
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 }
 
-void GLFWGL4ImGUILayer::EndFrame()
+void OpenMIMO::GLFWGL4ImGUILayer::EndFrame()
 {
     /*Future implementation*/
     //ImGuiIO& io = ImGui::GetIO();

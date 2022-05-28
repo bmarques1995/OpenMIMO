@@ -1,7 +1,7 @@
 #include "FileHandler.hpp"
 #include <fstream>
 
-bool FileHandler::ReadTextFile(std::string_view filepath, std::string* content)
+bool OpenMIMO::FileHandler::ReadTextFile(std::string_view filepath, std::string* content)
 {
 	std::ifstream fileStream;
 	fileStream.open(filepath.data(), std::ios::binary);
@@ -20,7 +20,7 @@ bool FileHandler::ReadTextFile(std::string_view filepath, std::string* content)
 	return true;
 }
 
-bool FileHandler::WriteTextFile(std::string_view filepath, std::string content)
+bool OpenMIMO::FileHandler::WriteTextFile(std::string_view filepath, std::string content)
 {
 	bool stored = false;
 	std::ofstream fileStream;

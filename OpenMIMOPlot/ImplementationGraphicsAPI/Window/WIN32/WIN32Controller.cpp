@@ -3,7 +3,7 @@
 #include <tchar.h>
 #include <cassert>
 
-void WIN32Controller::GetStartupParams(HINSTANCE* hInstance, LPWSTR* lpCmdLine, WORD* nCmdShow)
+void OpenMIMO::WIN32Controller::GetStartupParams(HINSTANCE* hInstance, LPWSTR* lpCmdLine, WORD* nCmdShow)
 {
     *hInstance = GetModuleHandleW(NULL);
     *lpCmdLine = GetCommandLineW();
@@ -14,7 +14,7 @@ void WIN32Controller::GetStartupParams(HINSTANCE* hInstance, LPWSTR* lpCmdLine, 
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-void WIN32Controller::CreateWindowClass(WNDCLASSEXW* windowClass, HINSTANCE* instance)
+void OpenMIMO::WIN32Controller::CreateWindowClass(WNDCLASSEXW* windowClass, HINSTANCE* instance)
 {
     ZeroMemory(windowClass, sizeof(*windowClass));
     windowClass->hInstance = *instance;
@@ -46,7 +46,7 @@ void WIN32Controller::CreateWindowClass(WNDCLASSEXW* windowClass, HINSTANCE* ins
     };
 }
 
-void WIN32Controller::CalculateWindowDimensionInitialization(LPRECT dimensions, long windowFlags, bool windowed)
+void OpenMIMO::WIN32Controller::CalculateWindowDimensionInitialization(LPRECT dimensions, long windowFlags, bool windowed)
 {
     if (!windowed)
     {
@@ -63,7 +63,7 @@ void WIN32Controller::CalculateWindowDimensionInitialization(LPRECT dimensions, 
     AdjustWindowRectEx(dimensions, windowFlags, 0, 0);
 }
 
-WIN32Controller::WIN32Controller(const WindowProps& props)
+OpenMIMO::WIN32Controller::WIN32Controller(const WindowProps& props)
 {
     m_Width = props.Width;
     m_Height = props.Height;
@@ -106,32 +106,32 @@ WIN32Controller::WIN32Controller(const WindowProps& props)
     UpdateWindow(m_Window);
 }
 
-WIN32Controller::~WIN32Controller()
+OpenMIMO::WIN32Controller::~WIN32Controller()
 {
     DestroyWindow(m_Window);
 }
 
-bool WIN32Controller::ShouldClose() const
+bool OpenMIMO::WIN32Controller::ShouldClose() const
 {
     return m_ShouldClose;
 }
 
-uint32_t WIN32Controller::GetWidth() const
+uint32_t OpenMIMO::WIN32Controller::GetWidth() const
 {
     return m_Width;
 }
 
-uint32_t WIN32Controller::GetHeight() const
+uint32_t OpenMIMO::WIN32Controller::GetHeight() const
 {
     return m_Height;
 }
 
-std::any WIN32Controller::GetNativeWindow() const
+std::any OpenMIMO::WIN32Controller::GetNativeWindow() const
 {
     return m_Window;
 }
 
-void WIN32Controller::Update()
+void OpenMIMO::WIN32Controller::Update()
 {
     MSG msg;
     while (::PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE))
@@ -143,7 +143,7 @@ void WIN32Controller::Update()
     }
 }
 
-void WIN32Controller::Present()
+void OpenMIMO::WIN32Controller::Present()
 {
     
 }

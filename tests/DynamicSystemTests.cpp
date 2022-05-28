@@ -7,7 +7,7 @@ TEST(DynamicSystem, NumeratorDimensionError)
 {
     Eigen::VectorXd tf_numerator(6);
     Eigen::VectorXd tf_denominator(5);
-    ASSERT_THROW(new DynamicSystem<double>(tf_numerator, tf_denominator), BadNumeratorException);
+    ASSERT_THROW(new OpenMIMO::DynamicSystem<double>(tf_numerator, tf_denominator), OpenMIMO::BadNumeratorException);
 }
 
 /*
@@ -26,7 +26,7 @@ TEST(DynamicSystem, DynamicMatrixDimensionError)
     Eigen::MatrixXd inputMatrix;
     Eigen::MatrixXd outputMatrix;
     
-    ASSERT_THROW(new DynamicSystem<double>(dynamicMatrix, inputMatrix, outputMatrix), BadDynamicMatrixException);
+    ASSERT_THROW(new OpenMIMO::DynamicSystem<double>(dynamicMatrix, inputMatrix, outputMatrix), OpenMIMO::BadDynamicMatrixException);
 }
 
 TEST(DynamicSystem, InputMatrixDimensionError)
@@ -35,7 +35,7 @@ TEST(DynamicSystem, InputMatrixDimensionError)
     Eigen::MatrixXd inputMatrix(1,4);
     Eigen::MatrixXd outputMatrix;
 
-    ASSERT_THROW(new DynamicSystem<double>(dynamicMatrix, inputMatrix, outputMatrix), BadInputMatrixException);
+    ASSERT_THROW(new OpenMIMO::DynamicSystem<double>(dynamicMatrix, inputMatrix, outputMatrix), OpenMIMO::BadInputMatrixException);
 }
 
 TEST(DynamicSystem, OutputMatrixDimensionError)
@@ -44,7 +44,7 @@ TEST(DynamicSystem, OutputMatrixDimensionError)
     Eigen::MatrixXd inputMatrix(4,1);
     Eigen::MatrixXd outputMatrix(4,1);
 
-    ASSERT_THROW(new DynamicSystem<double>(dynamicMatrix, inputMatrix, outputMatrix), BadOutputMatrixException);
+    ASSERT_THROW(new OpenMIMO::DynamicSystem<double>(dynamicMatrix, inputMatrix, outputMatrix), OpenMIMO::BadOutputMatrixException);
 }
 
 TEST(DynamicSystem, FeedForwardMatrixDimensionError)
@@ -55,13 +55,13 @@ TEST(DynamicSystem, FeedForwardMatrixDimensionError)
     Eigen::MatrixXd outputMatrix(2,4);
     Eigen::MatrixXd feedForwardMatrix(1,2);
 
-    ASSERT_THROW(new DynamicSystem<double>(dynamicMatrix, inputMatrix, outputMatrix, feedForwardMatrix), BadFeedForwardMatrixException);
+    ASSERT_THROW(new OpenMIMO::DynamicSystem<double>(dynamicMatrix, inputMatrix, outputMatrix, feedForwardMatrix), OpenMIMO::BadFeedForwardMatrixException);
 }
 
 //Melhorar, adicionar numerador de ordem 5
 TEST(DynamicSystem, TransferFunctionToSpaceOfStates)
 {
-    DynamicSystem<double> *dynamicSystem;
+    OpenMIMO::DynamicSystem<double> *dynamicSystem;
     Eigen::VectorXd tf_numerator(5);
     Eigen::VectorXd tf_denominator(5);
     tf_numerator << 2, 34, 204, 542, 706;
@@ -89,7 +89,7 @@ TEST(DynamicSystem, TransferFunctionToSpaceOfStates)
     
     try
     {
-        dynamicSystem = new DynamicSystem(tf_numerator, tf_denominator);
+        dynamicSystem = new OpenMIMO::DynamicSystem(tf_numerator, tf_denominator);
         ASSERT_TRUE(dynamicMatrix.isApprox(dynamicSystem->GetDynamicMatrix(), .0001));
         ASSERT_TRUE(inputMatrix.isApprox(dynamicSystem->GetInputMatrix(), .0001));
         ASSERT_TRUE(outputMatrix.isApprox(dynamicSystem->GetOutputMatrix(), .0001));
@@ -104,7 +104,7 @@ TEST(DynamicSystem, TransferFunctionToSpaceOfStates)
 
 TEST(DynamicSystem, ExpectedControllabilityMatrix)
 {
-    DynamicSystem<double> *dynamicSystem;
+    OpenMIMO::DynamicSystem<double> *dynamicSystem;
 
     Eigen::MatrixXd dynamicMatrix;
     Eigen::MatrixXd inputMatrix;
@@ -130,7 +130,7 @@ TEST(DynamicSystem, ExpectedControllabilityMatrix)
 
     try
     {
-        dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
+        dynamicSystem = new OpenMIMO::DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
         ASSERT_TRUE(controllabilityMatrix.isApprox(dynamicSystem->GetControllabilityMatrix(), .0001));
         delete dynamicSystem;
     }
@@ -143,7 +143,7 @@ TEST(DynamicSystem, ExpectedControllabilityMatrix)
 
 TEST(DynamicSystem, ExpectedObservabilityMatrix)
 {
-    DynamicSystem<double> *dynamicSystem;
+    OpenMIMO::DynamicSystem<double> *dynamicSystem;
 
     Eigen::MatrixXd dynamicMatrix;
     Eigen::MatrixXd inputMatrix;
@@ -172,7 +172,7 @@ TEST(DynamicSystem, ExpectedObservabilityMatrix)
 
     try
     {
-        dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix, feedforwardMatrix);
+        dynamicSystem = new OpenMIMO::DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix, feedforwardMatrix);
         ASSERT_TRUE(observabilityMatrix.isApprox(dynamicSystem->GetObservabilityMatrix(), .0001));
         delete dynamicSystem;
     }
@@ -185,7 +185,7 @@ TEST(DynamicSystem, ExpectedObservabilityMatrix)
 
 TEST(DynamicSystem, ExpectedEigenvalues)
 {
-    DynamicSystem<double> *dynamicSystem;
+    OpenMIMO::DynamicSystem<double> *dynamicSystem;
     Eigen::MatrixXd dynamicMatrix(3,3);
     Eigen::MatrixXd inputMatrix(3,1);
     Eigen::MatrixXd outputMatrix(1,3);
@@ -200,10 +200,10 @@ TEST(DynamicSystem, ExpectedEigenvalues)
 
     try
     {
-        dynamicSystem = new DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
-        std::sort(expectedEigenvalues.begin(), expectedEigenvalues.end(), ComplexGreater<double>);
+        dynamicSystem = new OpenMIMO::DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
+        std::sort(expectedEigenvalues.begin(), expectedEigenvalues.end(), OpenMIMO::ComplexGreater<double>);
         auto eigenvalues = dynamicSystem->GetEigenvalues();
-        std::sort(eigenvalues.begin(), eigenvalues.end(), ComplexGreater<double>);
+        std::sort(eigenvalues.begin(), eigenvalues.end(), OpenMIMO::ComplexGreater<double>);
         ASSERT_TRUE(expectedEigenvalues.isApprox(eigenvalues,.0001));
         delete dynamicSystem;
     }

@@ -1,13 +1,13 @@
 #include "AppContainer.hpp"
 #include "PlotLayers/TestLayer.hpp"
 
-AppContainer::AppContainer() :
+OpenMIMO::AppContainer::AppContainer() :
     Application()
 {
     PushLayer(new TestLayer());
 }
 
-AppContainer::~AppContainer()
+OpenMIMO::AppContainer::~AppContainer()
 {
 
 }

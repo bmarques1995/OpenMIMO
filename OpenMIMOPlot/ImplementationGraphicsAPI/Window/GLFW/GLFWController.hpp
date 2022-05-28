@@ -10,32 +10,35 @@
 
 #include "InterfaceGraphicsAPI/GraphicsContext.hpp"
 
-class GLFWController : public WindowController
+namespace OpenMIMO
 {
-    friend class GL4Context;
-private:
-    GraphicsContext* m_Context;
+    class GLFWController : public WindowController
+    {
+        friend class GL4Context;
+    private:
+        GraphicsContext* m_Context;
 
-    GLFWwindow* m_Window;
-    
-    uint32_t m_Width;
-    uint32_t m_Height;
-    std::string m_Title;
+        GLFWwindow* m_Window;
 
-public:
-    GLFWController(const WindowProps& props = WindowProps());
-    ~GLFWController();
+        uint32_t m_Width;
+        uint32_t m_Height;
+        std::string m_Title;
 
-    virtual bool ShouldClose() const override;
+    public:
+        GLFWController(const WindowProps& props = WindowProps());
+        ~GLFWController();
 
-    virtual uint32_t GetWidth() const override;
-    virtual uint32_t GetHeight() const override;
+        virtual bool ShouldClose() const override;
 
-    virtual std::any GetNativeWindow() const override;
+        virtual uint32_t GetWidth() const override;
+        virtual uint32_t GetHeight() const override;
 
-    virtual void Update() override;
+        virtual std::any GetNativeWindow() const override;
 
-    virtual void Present() override;
-};
+        virtual void Update() override;
+
+        virtual void Present() override;
+    };
+}
 
 #endif

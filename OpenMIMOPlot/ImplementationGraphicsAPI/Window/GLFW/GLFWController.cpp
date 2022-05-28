@@ -1,6 +1,6 @@
 #include "GLFWController.hpp"
 
-GLFWController::GLFWController(const WindowProps& props)
+OpenMIMO::GLFWController::GLFWController(const WindowProps& props)
 {
     m_Width = props.Width;
     m_Height = props.Height;
@@ -24,33 +24,33 @@ GLFWController::GLFWController(const WindowProps& props)
     });
 }
 
-GLFWController::~GLFWController()
+OpenMIMO::GLFWController::~GLFWController()
 {
     glfwDestroyWindow(m_Window);
     glfwTerminate();
 }
 
-bool GLFWController::ShouldClose() const
+bool OpenMIMO::GLFWController::ShouldClose() const
 {
     return glfwWindowShouldClose(m_Window);
 }
 
-uint32_t GLFWController::GetWidth() const
+uint32_t OpenMIMO::GLFWController::GetWidth() const
 {
     return m_Width;
 }
 
-uint32_t GLFWController::GetHeight() const
+uint32_t OpenMIMO::GLFWController::GetHeight() const
 {
     return m_Height;
 }
 
-std::any GLFWController::GetNativeWindow() const
+std::any OpenMIMO::GLFWController::GetNativeWindow() const
 {
     return m_Window;
 }
 
-void GLFWController::Update()
+void OpenMIMO::GLFWController::Update()
 {
     int width, height;
     glfwPollEvents();
@@ -59,7 +59,7 @@ void GLFWController::Update()
     m_Height = height;
 }
 
-void GLFWController::Present()
+void OpenMIMO::GLFWController::Present()
 {
     glfwSwapBuffers(m_Window);
 }

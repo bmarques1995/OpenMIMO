@@ -5,7 +5,7 @@
 #include "imgui.h"
 #include "implot.h"
 
-WIN32D3D11ImGUILayer::WIN32D3D11ImGUILayer(HWND window, ID3D11Device* device, ID3D11DeviceContext* deviceContext) :
+OpenMIMO::WIN32D3D11ImGUILayer::WIN32D3D11ImGUILayer(HWND window, ID3D11Device* device, ID3D11DeviceContext* deviceContext) :
     m_Window(window), m_Device(device), m_DeviceContext(deviceContext)
 {
     poles[0] = { -3,0 };
@@ -19,14 +19,14 @@ WIN32D3D11ImGUILayer::WIN32D3D11ImGUILayer(HWND window, ID3D11Device* device, ID
     }
 }
 
-WIN32D3D11ImGUILayer::~WIN32D3D11ImGUILayer()
+OpenMIMO::WIN32D3D11ImGUILayer::~WIN32D3D11ImGUILayer()
 {
     m_Window = nullptr;
     m_Device = nullptr;
     m_DeviceContext = nullptr;
 }
 
-void WIN32D3D11ImGUILayer::OnAttach()
+void OpenMIMO::WIN32D3D11ImGUILayer::OnAttach()
 {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -44,25 +44,25 @@ void WIN32D3D11ImGUILayer::OnAttach()
     ImGui_ImplDX11_Init(m_Device, m_DeviceContext);
 }
 
-void WIN32D3D11ImGUILayer::OnDetach()
+void OpenMIMO::WIN32D3D11ImGUILayer::OnDetach()
 {
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
 }
 
-void WIN32D3D11ImGUILayer::OnUpdate()
+void OpenMIMO::WIN32D3D11ImGUILayer::OnUpdate()
 {
 }
 
-void WIN32D3D11ImGUILayer::BeginFrame()
+void OpenMIMO::WIN32D3D11ImGUILayer::BeginFrame()
 {
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 }
 
-void WIN32D3D11ImGUILayer::EndFrame()
+void OpenMIMO::WIN32D3D11ImGUILayer::EndFrame()
 {
     ImGui::Render();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

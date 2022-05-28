@@ -1,16 +1,14 @@
 #include "ApplicationStarter.hpp"
 #include "Utils/FileHandler.hpp"
 
-#include <Windows.h>
+json OpenMIMO::ApplicationStarter::s_JSONProperties;
 
-json ApplicationStarter::s_JSONProperties;
-
-const json& ApplicationStarter::GetStartupJson()
+const json& OpenMIMO::ApplicationStarter::GetStartupJson()
 {
     return s_JSONProperties;
 }
 
-void ApplicationStarter::BuildStarter()
+void OpenMIMO::ApplicationStarter::BuildStarter()
 {
     std::string jsonContent;
     if (FileHandler::ReadTextFile("settings.json", &jsonContent) && PropertiesPassed())
@@ -19,7 +17,7 @@ void ApplicationStarter::BuildStarter()
         BuildStandardStarter();
 }
 
-bool ApplicationStarter::PropertiesPassed()
+bool OpenMIMO::ApplicationStarter::PropertiesPassed()
 {
     //Here you register all properties you want to verify in the settings.json
     bool properties = true;
@@ -28,7 +26,7 @@ bool ApplicationStarter::PropertiesPassed()
     return properties;
 }
 
-void ApplicationStarter::BuildStandardStarter()
+void OpenMIMO::ApplicationStarter::BuildStandardStarter()
 {
     s_JSONProperties["WindowAPI"] = "GLFW";
     s_JSONProperties["GraphicsAPI"] = "GL4";

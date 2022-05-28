@@ -3,7 +3,7 @@
 #include "implot.h"
 
 
-TestLayer::TestLayer() :
+OpenMIMO::TestLayer::TestLayer() :
     Layer("Test Layer")
 {
     poles[0] = { -3,0 };
@@ -17,19 +17,19 @@ TestLayer::TestLayer() :
     }
 }
 
-TestLayer::~TestLayer(){}
+OpenMIMO::TestLayer::~TestLayer(){}
 
-void TestLayer::OnAttach()
+void OpenMIMO::TestLayer::OnAttach()
 {
 
 }
-void TestLayer::OnDetach(){}
-void TestLayer::OnUpdate()
+void OpenMIMO::TestLayer::OnDetach(){}
+void OpenMIMO::TestLayer::OnUpdate()
 {
     ImGUIRender();
 }
 
-void TestLayer::ImGUIRender()
+void OpenMIMO::TestLayer::ImGUIRender()
 {
     //Only for tests will be removed from here
     ImPlot::ShowStyleEditor();

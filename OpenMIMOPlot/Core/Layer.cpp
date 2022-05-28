@@ -1,17 +1,17 @@
 #include "Layer.hpp"
 
-Layer::Layer(std::string_view layerName) :
+OpenMIMO::Layer::Layer(std::string_view layerName) :
     m_LayerName(layerName)
 {
 
 }
 
-Layer::~Layer()
+OpenMIMO::Layer::~Layer()
 {
 
 }
 
-std::string_view Layer::GetName() const
+std::string_view OpenMIMO::Layer::GetName() const
 {
     return m_LayerName;
 }

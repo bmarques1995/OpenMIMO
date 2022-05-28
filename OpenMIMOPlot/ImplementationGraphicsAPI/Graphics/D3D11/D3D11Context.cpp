@@ -1,7 +1,7 @@
 #include "D3D11Context.hpp"
 #include <GLFW/glfw3.h>
 
-D3D11Context::D3D11Context(WindowController* controller) :
+OpenMIMO::D3D11Context::D3D11Context(WindowController* controller) :
     m_WindowController(controller)
 {
     HWND window = std::any_cast<HWND>(m_WindowController->GetNativeWindow());
@@ -48,12 +48,12 @@ D3D11Context::D3D11Context(WindowController* controller) :
     CreateRenderTarget();
 }
 
-D3D11Context::~D3D11Context()
+OpenMIMO::D3D11Context::~D3D11Context()
 {
     
 }
 
-void D3D11Context::CreateRenderTarget()
+void OpenMIMO::D3D11Context::CreateRenderTarget()
 {
     ID3D11Texture2D* pBackBuffer;
     m_SwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
@@ -61,13 +61,13 @@ void D3D11Context::CreateRenderTarget()
     pBackBuffer->Release();
 }
 
-void D3D11Context::Update()
+void OpenMIMO::D3D11Context::Update()
 {
     m_DeviceContext->OMSetRenderTargets(1, m_MainRenderTargetView.GetAddressOf(), NULL);
     m_DeviceContext->ClearRenderTargetView(m_MainRenderTargetView.Get(), m_ClearColor);
 }
 
-void D3D11Context::SetClearColor(float x, float y, float z, float w)
+void OpenMIMO::D3D11Context::SetClearColor(float x, float y, float z, float w)
 {
     m_ClearColor[0] = x;
     m_ClearColor[1] = y;
@@ -75,7 +75,7 @@ void D3D11Context::SetClearColor(float x, float y, float z, float w)
     m_ClearColor[3] = w;
 }
 
-std::any D3D11Context::GetComponentConstructor() const
+std::any OpenMIMO::D3D11Context::GetComponentConstructor() const
 {
     GraphicsMinimal minimal;
     minimal.Device = m_Device.Get();
@@ -83,7 +83,7 @@ std::any D3D11Context::GetComponentConstructor() const
     return minimal;
 }
 
-void D3D11Context::Present()
+void OpenMIMO::D3D11Context::Present()
 {
     m_SwapChain->Present(0, 0);
 }

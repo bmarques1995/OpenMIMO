@@ -14,9 +14,7 @@
 
 #include <iostream>
 
-using std::cout;
-
-GraphicsInjector::GraphicsInjector()
+OpenMIMO::GraphicsInjector::GraphicsInjector()
 {
     std::string_view currentGraphicsPair;
 
@@ -49,12 +47,12 @@ GraphicsInjector::GraphicsInjector()
     
 }
 
-GraphicsInjector::~GraphicsInjector()
+OpenMIMO::GraphicsInjector::~GraphicsInjector()
 {
 
 }
 
-GraphicsStartup GraphicsInjector::GetGraphics(const std::pair<std::string_view, std::string_view>& map, const WindowProps props)
+OpenMIMO::GraphicsStartup OpenMIMO::GraphicsInjector::GetGraphics(const std::pair<std::string_view, std::string_view>& map, const WindowProps props)
 {
     std::string pairName;
     ProcessGraphicsPair(map, &pairName);
@@ -65,7 +63,7 @@ GraphicsStartup GraphicsInjector::GetGraphics(const std::pair<std::string_view, 
         return GraphicsStartup(nullptr, nullptr, nullptr);
 }
 
-void GraphicsInjector::ProcessGraphicsPair(const std::pair<std::string_view, std::string_view>& map, std::string* returnType)
+void OpenMIMO::GraphicsInjector::ProcessGraphicsPair(const std::pair<std::string_view, std::string_view>& map, std::string* returnType)
 {
     std::stringstream pairInput;
     pairInput << map.first << map.second;

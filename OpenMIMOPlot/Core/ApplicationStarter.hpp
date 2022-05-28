@@ -5,17 +5,19 @@
 
 using nlohmann::json;
 
-class ApplicationStarter
+namespace OpenMIMO
 {
-public:
-	static const json& GetStartupJson();
-	static void BuildStarter();
-private:
-	static json s_JSONProperties;
+	class ApplicationStarter
+	{
+	public:
+		static const json& GetStartupJson();
+		static void BuildStarter();
+	private:
+		static json s_JSONProperties;
 
-	static bool PropertiesPassed();
-	static void BuildStandardStarter();
-};
-
+		static bool PropertiesPassed();
+		static void BuildStandardStarter();
+	};
+}
 
 #endif

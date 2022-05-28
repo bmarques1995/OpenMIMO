@@ -9,7 +9,7 @@ INT APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_ LPWSTR    lpCmdLine,
     _In_ int       nCmdShow)
 {
-    Application* app = new AppContainer();
+    OpenMIMO::Application* app = new OpenMIMO::AppContainer();
     app->Run();
     delete app;
 
@@ -20,7 +20,7 @@ INT APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 int main(int argc, char** argv)
 {
-    Application* app = new AppContainer();
+    OpenMIMO::Application* app = new OpenMIMO::AppContainer();
     app->Run();
     delete app;
 

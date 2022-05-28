@@ -1,5 +1,5 @@
 template<typename T>
-inline DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, 1>& numerator, const Eigen::Matrix<T, -1, 1>& denominator)
+inline OpenMIMO::DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, 1>& numerator, const Eigen::Matrix<T, -1, 1>& denominator)
 {
     CheckValidTypes();
     CheckValidTFDimensions(numerator.rows(), denominator.rows());
@@ -11,7 +11,7 @@ inline DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, 1>& numerator,
 }
 
 template<typename T>
-inline DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, -1>& matrixA, const Eigen::Matrix<T, -1, -1>& matrixB, const Eigen::Matrix<T, -1, -1>& matrixC)
+inline OpenMIMO::DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, -1>& matrixA, const Eigen::Matrix<T, -1, -1>& matrixB, const Eigen::Matrix<T, -1, -1>& matrixC)
 {
     CheckValidTypes();
     //construir exceções para tratativas
@@ -28,7 +28,7 @@ inline DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, -1>& matrixA, 
 }
 
 template<typename T>
-inline DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, -1>& dynamicMatrix, const Eigen::Matrix<T, -1, -1>& inputMatrix, const Eigen::Matrix<T, -1, -1>& outputMatrix, const Eigen::Matrix<T, -1, -1>& feedForwardMatrix)
+inline OpenMIMO::DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, -1>& dynamicMatrix, const Eigen::Matrix<T, -1, -1>& inputMatrix, const Eigen::Matrix<T, -1, -1>& outputMatrix, const Eigen::Matrix<T, -1, -1>& feedForwardMatrix)
 {
     CheckValidTypes();
     //construir exceções para tratativas
@@ -44,7 +44,7 @@ inline DynamicSystem<T>::DynamicSystem(const Eigen::Matrix<T, -1, -1>& dynamicMa
 }
 
 template<typename T>
-inline void DynamicSystem<T>::PrintMatrices()
+inline void OpenMIMO::DynamicSystem<T>::PrintMatrices()
 {
     std::cout << "A: " << "\n";
     std::cout << m_DynamicMatrix << "\n";
@@ -67,43 +67,43 @@ inline void DynamicSystem<T>::PrintMatrices()
 }
 
 template<typename T>
-inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetDynamicMatrix() const
+inline const Eigen::Matrix<T, -1, -1>& OpenMIMO::DynamicSystem<T>::GetDynamicMatrix() const
 {
     return m_DynamicMatrix;
 }
 
 template<typename T>
-inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetInputMatrix() const
+inline const Eigen::Matrix<T, -1, -1>& OpenMIMO::DynamicSystem<T>::GetInputMatrix() const
 {
     return m_InputMatrix;
 }
 
 template<typename T>
-inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetOutputMatrix() const
+inline const Eigen::Matrix<T, -1, -1>& OpenMIMO::DynamicSystem<T>::GetOutputMatrix() const
 {
     return m_OutputMatrix;
 }
 
 template<typename T>
-inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetFeedForwardMatrix() const
+inline const Eigen::Matrix<T, -1, -1>& OpenMIMO::DynamicSystem<T>::GetFeedForwardMatrix() const
 {
     return m_FeedForwardMatrix;
 }
 
 template<typename T>
-inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetControllabilityMatrix() const
+inline const Eigen::Matrix<T, -1, -1>& OpenMIMO::DynamicSystem<T>::GetControllabilityMatrix() const
 {
     return m_ControllabilityMatrix;
 }
 
 template<typename T>
-inline const Eigen::Matrix<T, -1, -1>& DynamicSystem<T>::GetObservabilityMatrix() const
+inline const Eigen::Matrix<T, -1, -1>& OpenMIMO::DynamicSystem<T>::GetObservabilityMatrix() const
 {
     return m_ObservabilityMatrix;
 }
 
 template<typename T>
-inline const Eigen::Matrix<std::complex<T>, -1, 1>& DynamicSystem<T>::GetEigenvalues() const
+inline const Eigen::Matrix<std::complex<T>, -1, 1>& OpenMIMO::DynamicSystem<T>::GetEigenvalues() const
 {
     return m_Eigenvalues;
 }
@@ -111,14 +111,14 @@ inline const Eigen::Matrix<std::complex<T>, -1, 1>& DynamicSystem<T>::GetEigenva
 //private members
 
 template<typename T>
-inline void DynamicSystem<T>::CheckValidTypes()
+inline void OpenMIMO::DynamicSystem<T>::CheckValidTypes()
 {
     if(!(typeid(T) == typeid(float) || typeid(T) == typeid(double)))
         throw BadTypeStartException();
 }
 
 template<typename T>
-inline void DynamicSystem<T>::CheckValidTFDimensions(size_t numeratorDegree, size_t denominatorDegree)
+inline void OpenMIMO::DynamicSystem<T>::CheckValidTFDimensions(size_t numeratorDegree, size_t denominatorDegree)
 {
     if(numeratorDegree > denominatorDegree)
             throw BadNumeratorException(numeratorDegree, denominatorDegree);
@@ -126,7 +126,7 @@ inline void DynamicSystem<T>::CheckValidTFDimensions(size_t numeratorDegree, siz
 }
 
 template<typename T>
-inline void DynamicSystem<T>::CheckValidSSDimensions()
+inline void OpenMIMO::DynamicSystem<T>::CheckValidSSDimensions()
 {
     if(m_DynamicMatrix.rows() != m_DynamicMatrix.cols())
         throw BadDynamicMatrixException(m_DynamicMatrix.rows(), m_DynamicMatrix.cols());
@@ -139,7 +139,7 @@ inline void DynamicSystem<T>::CheckValidSSDimensions()
 }
 
 template<typename T>
-inline void DynamicSystem<T>::MonizeDenominator(Eigen::Matrix<T, -1, 1>& numerator, Eigen::Matrix<T, -1, 1>& denominator)
+inline void OpenMIMO::DynamicSystem<T>::MonizeDenominator(Eigen::Matrix<T, -1, 1>& numerator, Eigen::Matrix<T, -1, 1>& denominator)
 {
     if(denominator(0) != (T)1.0)
     {
@@ -157,7 +157,7 @@ inline void DynamicSystem<T>::MonizeDenominator(Eigen::Matrix<T, -1, 1>& numerat
 }
 
 template<typename T>
-inline void DynamicSystem<T>::DissociateFeedForwardTerm(Eigen::Matrix<T, -1, 1>& numerator, Eigen::Matrix<T, -1, 1>& denominator, T& feedForwardTerm)
+inline void OpenMIMO::DynamicSystem<T>::DissociateFeedForwardTerm(Eigen::Matrix<T, -1, 1>& numerator, Eigen::Matrix<T, -1, 1>& denominator, T& feedForwardTerm)
 {
     if(numerator.rows() == denominator.rows())
     {
@@ -170,14 +170,14 @@ inline void DynamicSystem<T>::DissociateFeedForwardTerm(Eigen::Matrix<T, -1, 1>&
 }
 
 template<typename T>
-inline void DynamicSystem<T>::BuildFeedForwardMatrixFromTF(T directTransferTerm)
+inline void OpenMIMO::DynamicSystem<T>::BuildFeedForwardMatrixFromTF(T directTransferTerm)
 {
     m_FeedForwardMatrix.resize(1,1);
     m_FeedForwardMatrix(0,0) = directTransferTerm;
 }
 
 template<typename T>
-inline void DynamicSystem<T>::BuildDynamicMatrixFromTF(const Eigen::Matrix<T, -1, 1>& denominator)
+inline void OpenMIMO::DynamicSystem<T>::BuildDynamicMatrixFromTF(const Eigen::Matrix<T, -1, 1>& denominator)
 {
     m_DynamicMatrix.resize((size_t) denominator.rows() - 1, (size_t) denominator.rows() - 1);
     m_DynamicMatrix.setZero();
@@ -194,7 +194,7 @@ inline void DynamicSystem<T>::BuildDynamicMatrixFromTF(const Eigen::Matrix<T, -1
 }
 
 template<typename T>
-inline void DynamicSystem<T>::BuildInputMatrixFromTF()
+inline void OpenMIMO::DynamicSystem<T>::BuildInputMatrixFromTF()
 {
     m_InputMatrix.resize(m_DynamicMatrix.rows(),1);
     m_InputMatrix.setZero();
@@ -203,7 +203,7 @@ inline void DynamicSystem<T>::BuildInputMatrixFromTF()
 }
 
 template<typename T>
-inline void DynamicSystem<T>::BuildOutputMatrixFromTF(const Eigen::Matrix<T, -1, 1>& numerator)
+inline void OpenMIMO::DynamicSystem<T>::BuildOutputMatrixFromTF(const Eigen::Matrix<T, -1, 1>& numerator)
 {
     m_OutputMatrix.resize(1, m_DynamicMatrix.rows());
     m_OutputMatrix.setZero();
@@ -215,7 +215,7 @@ inline void DynamicSystem<T>::BuildOutputMatrixFromTF(const Eigen::Matrix<T, -1,
 }
 
 template<typename T>
-inline void DynamicSystem<T>::SetStatesMatricesFromTF(const Eigen::Matrix<T, -1, 1>& numerator, const Eigen::Matrix<T, -1, 1>& denominator)
+inline void OpenMIMO::DynamicSystem<T>::SetStatesMatricesFromTF(const Eigen::Matrix<T, -1, 1>& numerator, const Eigen::Matrix<T, -1, 1>& denominator)
 {
     auto numeratorCopy = numerator;
     auto denominatorCopy = denominator;
@@ -231,7 +231,7 @@ inline void DynamicSystem<T>::SetStatesMatricesFromTF(const Eigen::Matrix<T, -1,
 }
 
 template<typename T>
-inline void DynamicSystem<T>::BuildControllabilityMatrix()
+inline void OpenMIMO::DynamicSystem<T>::BuildControllabilityMatrix()
 {
     m_ControllabilityMatrix.resize(m_DynamicMatrix.rows(), m_DynamicMatrix.cols() * m_InputMatrix.cols());
     auto controllabilityCol = m_InputMatrix;
@@ -246,7 +246,7 @@ inline void DynamicSystem<T>::BuildControllabilityMatrix()
 }
 
 template<typename T>
-inline void DynamicSystem<T>::BuildObservabilityMatrix()
+inline void OpenMIMO::DynamicSystem<T>::BuildObservabilityMatrix()
 {
     m_ObservabilityMatrix.resize(m_DynamicMatrix.rows() * m_OutputMatrix.rows(), m_DynamicMatrix.cols());
     auto observabilityRow = m_OutputMatrix;

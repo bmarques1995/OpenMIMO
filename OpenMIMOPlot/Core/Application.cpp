@@ -6,7 +6,7 @@
 
 using std::cout;
 
-Application::Application()
+OpenMIMO::Application::Application()
 {
     m_GraphicsInjector = new GraphicsInjector();
 
@@ -40,7 +40,7 @@ Application::Application()
     m_ImPlotLayer->OnAttach();
 }
 
-Application::~Application()
+OpenMIMO::Application::~Application()
 {
     m_ImPlotLayer->OnDetach();
     m_ImGUILayer->OnDetach();
@@ -52,7 +52,7 @@ Application::~Application()
     delete m_GraphicsInjector;
 }
 
-void Application::Run()
+void OpenMIMO::Application::Run()
 {
     while (!m_WindowController->ShouldClose())
     {		
@@ -67,12 +67,12 @@ void Application::Run()
     }
 }
 
-void Application::PushLayer(Layer* layer)
+void OpenMIMO::Application::PushLayer(Layer* layer)
 {
     m_LayerStack.PushLayer(layer);
 }
 
-void Application::PushOverlay(Layer* overlay)
+void OpenMIMO::Application::PushOverlay(Layer* overlay)
 {
     m_LayerStack.PushOverlay(overlay);
 }

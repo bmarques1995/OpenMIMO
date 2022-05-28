@@ -3,12 +3,15 @@
 
 #include "Core/Application.hpp"
 
-class AppContainer : public Application
+namespace OpenMIMO
 {
-private:
-public:
-    AppContainer();
-    ~AppContainer();
-};
+    class AppContainer : public Application
+    {
+    private:
+    public:
+        AppContainer();
+        ~AppContainer();
+    };
+}
 
 #endif

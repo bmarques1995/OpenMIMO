@@ -13,23 +13,26 @@
 #include "Core/GraphicsInjector.hpp"
 #include "Core/LayerStack.hpp"
 
-class Application
+namespace OpenMIMO
 {
-private:
-    WindowController* m_WindowController;
-    GraphicsContext* m_GraphicsContext;
-    ImGUILayer* m_ImGUILayer;
-    ImPlotLayer* m_ImPlotLayer;
+    class Application
+    {
+    private:
+        WindowController* m_WindowController;
+        GraphicsContext* m_GraphicsContext;
+        ImGUILayer* m_ImGUILayer;
+        ImPlotLayer* m_ImPlotLayer;
 
-    GraphicsInjector* m_GraphicsInjector;
-    LayerStack m_LayerStack;
-public:
-    Application();
-    ~Application();
-    void Run();
+        GraphicsInjector* m_GraphicsInjector;
+        LayerStack m_LayerStack;
+    public:
+        Application();
+        ~Application();
+        void Run();
 
-    void PushLayer(Layer* layer);
-	void PushOverlay(Layer* overlay);
-};
+        void PushLayer(Layer* layer);
+        void PushOverlay(Layer* overlay);
+    };
+}
 
 #endif

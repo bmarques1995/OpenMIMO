@@ -3,15 +3,18 @@
 
 #include "Layer.hpp"
 
-class ImGUILayer : public Layer
+namespace OpenMIMO
 {
-private:
-public:
-    ImGUILayer(std::string_view layerName = "ImGUIDebugLayer");
-    ~ImGUILayer();
+    class ImGUILayer : public Layer
+    {
+    private:
+    public:
+        ImGUILayer(std::string_view layerName = "ImGUIDebugLayer");
+        ~ImGUILayer();
 
-    virtual void BeginFrame() = 0;
-    virtual void EndFrame() = 0;
-};
+        virtual void BeginFrame() = 0;
+        virtual void EndFrame() = 0;
+    };
+}
 
 #endif

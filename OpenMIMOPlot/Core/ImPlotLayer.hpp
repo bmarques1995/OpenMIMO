@@ -3,17 +3,20 @@
 
 #include "Layer.hpp"
 
-class ImPlotLayer : public Layer
+namespace OpenMIMO
 {
-private:
-    
-public:
-    ImPlotLayer(std::string_view layerName = "ImPlotDebugLayer");
-    ~ImPlotLayer();
+    class ImPlotLayer : public Layer
+    {
+    private:
 
-    virtual void OnAttach() override;
-    virtual void OnDetach() override;
-    virtual void OnUpdate() override;
-};
+    public:
+        ImPlotLayer(std::string_view layerName = "ImPlotDebugLayer");
+        ~ImPlotLayer();
+
+        virtual void OnAttach() override;
+        virtual void OnDetach() override;
+        virtual void OnUpdate() override;
+    };
+}
 
 #endif
