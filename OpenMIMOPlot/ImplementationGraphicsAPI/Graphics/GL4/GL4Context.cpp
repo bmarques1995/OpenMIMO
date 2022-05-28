@@ -1,7 +1,7 @@
 #include "GL4Context.hpp"
 #include <GLFW/glfw3.h>
 
-GL4Context::GL4Context(const WindowController* windowController) :
+GL4Context::GL4Context(WindowController* windowController) :
     m_WindowController(windowController)
 {
     int status = gladLoadGL(glfwGetProcAddress);
@@ -33,4 +33,5 @@ std::any GL4Context::GetComponentConstructor() const
 
 void GL4Context::Present()
 {
+    m_WindowController->Present();
 }

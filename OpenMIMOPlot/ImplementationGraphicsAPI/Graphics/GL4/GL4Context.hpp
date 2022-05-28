@@ -9,12 +9,13 @@
 
 class GL4Context : public GraphicsContext
 {
+    friend class GLFWController;
 private:
     std::string_view m_GLSLVersion = "#version 130";
-    const WindowController* m_WindowController;
+    WindowController* m_WindowController;
     float m_ClearColor[4] = {.0f,.0f,.0f,1.0f};
 public:
-    GL4Context(const WindowController* windowController);
+    GL4Context(WindowController* windowController);
     ~GL4Context();
 
     virtual void Update() override;

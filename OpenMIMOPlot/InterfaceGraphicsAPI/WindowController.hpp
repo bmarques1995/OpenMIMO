@@ -12,7 +12,7 @@ struct WindowProps
 {
     uint32_t Width;
     uint32_t Height;
-    std::string_view Title;
+    std::string Title;
 
     WindowProps(uint32_t width = 1280, uint32_t height = 720, std::string_view title = "OpenMIMO Plot") :
         Width(width), Height(height), Title(title)

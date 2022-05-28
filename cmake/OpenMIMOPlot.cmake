@@ -93,8 +93,16 @@ set(PLOT_MIMO_HEADERS
     OpenMIMOPlot/AppContainer.hpp
 )
 
+set(WinLibs)
+
 if(WIN32)
     add_compile_definitions(WINDOWS_PLOT)
+    set(WinLibs 
+        "d3d11.lib"
+        "d3dcompiler.lib"
+        "gdi32.lib"
+        "dxguid.lib"
+    )
     if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
         add_executable(OpenMIMOPlot WIN32 ${PLOT_MIMO_HEADERS} ${PLOT_MIMO_SOURCES})
     else()
@@ -104,4 +112,4 @@ else()
     add_executable(OpenMIMOPlot ${PLOT_MIMO_HEADERS} ${PLOT_MIMO_SOURCES})
 endif()
 target_include_directories(OpenMIMOPlot PRIVATE ./OpenMIMOPlot IMPLOT_INCLUDE_DIR IMGUI_INCLUDE_DIR ./vendor/glfw/include ./vendor/glad/include)
-target_link_libraries(OpenMIMOPlot PRIVATE implot imgui glad glfw)
+target_link_libraries(OpenMIMOPlot PRIVATE implot imgui glad glfw ${WinLibs})

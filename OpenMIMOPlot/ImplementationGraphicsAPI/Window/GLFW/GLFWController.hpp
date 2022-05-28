@@ -8,13 +8,20 @@
 #include <cstdio>
 #include <string>
 
+#include "InterfaceGraphicsAPI/GraphicsContext.hpp"
+
 class GLFWController : public WindowController
 {
+    friend class GL4Context;
 private:
+    GraphicsContext* m_Context;
+
     GLFWwindow* m_Window;
+    
     uint32_t m_Width;
     uint32_t m_Height;
     std::string m_Title;
+
 public:
     GLFWController(const WindowProps& props = WindowProps());
     ~GLFWController();

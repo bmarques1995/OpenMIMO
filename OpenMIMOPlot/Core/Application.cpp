@@ -49,7 +49,7 @@ void Application::Run()
 			layer->OnUpdate();
         m_ImGUILayer->OnUpdate();
         m_ImGUILayer->EndFrame();
-        m_WindowController->Present();
+        m_GraphicsContext->Present();
     }
 }
 
