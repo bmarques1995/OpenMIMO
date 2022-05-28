@@ -59,7 +59,10 @@ GraphicsStartup GraphicsInjector::GetGraphics(const std::pair<std::string_view, 
     std::string pairName;
     ProcessGraphicsPair(map, &pairName);
     std::string_view pair = pairName;
-    return m_FunctionMap[pair](props);
+    if (m_FunctionMap.find(pair) != m_FunctionMap.end())
+        return m_FunctionMap[pair](props);
+    else
+        return GraphicsStartup(nullptr, nullptr, nullptr);
 }
 
 void GraphicsInjector::ProcessGraphicsPair(const std::pair<std::string_view, std::string_view>& map, std::string* returnType)

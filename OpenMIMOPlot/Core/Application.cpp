@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "ApplicationStarter.hpp"
 
 #include "imgui.h"
 #include <iostream>
@@ -9,13 +10,26 @@ Application::Application()
 {
     m_GraphicsInjector = new GraphicsInjector();
 
-    std::pair<std::string_view, std::string_view> APIs = {"GLFW", "GL4"};
+    ApplicationStarter::BuildStarter();
+
+    json startupJson = ApplicationStarter::GetStartupJson();
+
+    std::pair<std::string_view, std::string_view> APIs = { startupJson["WindowAPI"], startupJson["GraphicsAPI"] };
     GraphicsStartup startup =  m_GraphicsInjector->GetGraphics(APIs);
 
     m_WindowController = startup.Controller;
     m_GraphicsContext = startup.Context;
     m_ImGUILayer = startup.Layer;
     m_ImPlotLayer = new ImPlotLayer();
+
+    if (m_WindowController == nullptr)
+        exit(1);
+
+    if (m_GraphicsContext == nullptr)
+        exit(2);
+
+    if (m_ImGUILayer == nullptr)
+        exit(3);
 
     cout << (size_t)m_WindowController << " " << (size_t) m_GraphicsInjector <<"\n";
 
