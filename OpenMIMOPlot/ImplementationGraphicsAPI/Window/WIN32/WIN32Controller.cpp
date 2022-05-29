@@ -42,7 +42,7 @@ void OpenMIMO::WIN32Controller::CreateWindowClass(WNDCLASSEXW* windowClass, HINS
             ::PostQuitMessage(0);
             return 0;
         }
-        return ::DefWindowProc(hWnd, msg, wParam, lParam);
+        return ::DefWindowProcW(hWnd, msg, wParam, lParam);
     };
 }
 
