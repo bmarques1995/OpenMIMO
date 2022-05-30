@@ -6,6 +6,9 @@
                 "${workspaceFolder}/include",
                 "${workspaceFolder}/OpenMIMOPlot",
                 "${workspaceFolder}/vendor/Eigen3",
+                "${workspaceFolder}/vendor/glfw/include",
+                "${workspaceFolder}/vendor/imgui",
+                "${workspaceFolder}/vendor/nlohmann_json/include",
                 "${workspaceFolder}/vendor/googletest/googlemock/include",
                 "${workspaceFolder}/vendor/googletest/googletest/include"
             ],

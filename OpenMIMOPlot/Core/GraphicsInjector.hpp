@@ -32,12 +32,12 @@ namespace OpenMIMO
     private:
         std::unordered_map<std::string_view, std::function<GraphicsStartup(const WindowProps&)>> m_FunctionMap;
 
-        void ProcessGraphicsPair(const std::pair<std::string_view, std::string_view>& map, std::string* returnType);
+        void ProcessGraphicsPair(const std::pair<std::string, std::string>& map, std::string* returnType);
     public:
         GraphicsInjector();
         ~GraphicsInjector();
 
-        GraphicsStartup GetGraphics(const std::pair<std::string_view, std::string_view>& map, const WindowProps props = WindowProps());
+        GraphicsStartup GetGraphics(const std::pair<std::string, std::string>& map, const WindowProps props = WindowProps());
     };
 
 }

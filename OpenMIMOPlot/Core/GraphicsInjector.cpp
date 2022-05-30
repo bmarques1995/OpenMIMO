@@ -52,7 +52,7 @@ OpenMIMO::GraphicsInjector::~GraphicsInjector()
 
 }
 
-OpenMIMO::GraphicsStartup OpenMIMO::GraphicsInjector::GetGraphics(const std::pair<std::string_view, std::string_view>& map, const WindowProps props)
+OpenMIMO::GraphicsStartup OpenMIMO::GraphicsInjector::GetGraphics(const std::pair<std::string, std::string>& map, const WindowProps props)
 {
     std::string pairName;
     ProcessGraphicsPair(map, &pairName);
@@ -63,7 +63,7 @@ OpenMIMO::GraphicsStartup OpenMIMO::GraphicsInjector::GetGraphics(const std::pai
         return GraphicsStartup(nullptr, nullptr, nullptr);
 }
 
-void OpenMIMO::GraphicsInjector::ProcessGraphicsPair(const std::pair<std::string_view, std::string_view>& map, std::string* returnType)
+void OpenMIMO::GraphicsInjector::ProcessGraphicsPair(const std::pair<std::string, std::string>& map, std::string* returnType)
 {
     std::stringstream pairInput;
     pairInput << map.first << map.second;
