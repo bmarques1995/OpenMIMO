@@ -13,6 +13,9 @@
 #include "Core/GraphicsInjector.hpp"
 #include "Core/LayerStack.hpp"
 
+#include "Events/EventDispatcher.hpp"
+#include "Events/ApplicationEvent.hpp"
+
 namespace OpenMIMO
 {
     class Application
@@ -25,6 +28,13 @@ namespace OpenMIMO
 
         GraphicsInjector* m_GraphicsInjector;
         LayerStack m_LayerStack;
+
+        void OnClose(Event& eventHandler);
+        void OnResize(Event& eventHandler);
+        void OnFramebufferResize(Event& eventHandler);
+        void OnMinimize(Event& eventHandler);
+        void OnRestore(Event& eventHandler);
+
     public:
         Application();
         ~Application();

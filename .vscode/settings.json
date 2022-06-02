@@ -86,7 +86,10 @@
         "numericaldiff": "cpp",
         "openglsupport": "cpp",
         "specialfunctions": "cpp",
-        "splines": "cpp"
+        "splines": "cpp",
+        "codecvt": "cpp",
+        "csignal": "cpp",
+        "span": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

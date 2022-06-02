@@ -13,6 +13,7 @@
 #endif
 
 #include <iostream>
+#include <algorithm>
 
 OpenMIMO::GraphicsInjector::GraphicsInjector()
 {
@@ -56,6 +57,7 @@ OpenMIMO::GraphicsStartup OpenMIMO::GraphicsInjector::GetGraphics(const std::pai
 {
     std::string pairName;
     ProcessGraphicsPair(map, &pairName);
+    std::transform(pairName.begin(), pairName.end(), pairName.begin(), ::toupper);
     std::string_view pair = pairName;
     if (m_FunctionMap.find(pair) != m_FunctionMap.end())
         return m_FunctionMap[pair](props);

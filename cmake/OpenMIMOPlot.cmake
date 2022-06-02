@@ -22,6 +22,9 @@ file(GLOB_RECURSE PLOT_MIMO_LAYERS_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} 
 file(GLOB_RECURSE PLOT_MIMO_UTILS_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "OpenMIMOPlot/Utils/*.cpp")
 file(GLOB_RECURSE PLOT_MIMO_UTILS_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "OpenMIMOPlot/Utils/*.hpp")
 
+file(GLOB_RECURSE PLOT_MIMO_EVENTS_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "OpenMIMOPlot/Events/*.cpp")
+file(GLOB_RECURSE PLOT_MIMO_EVENTS_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "OpenMIMOPlot/Events/*.hpp")
+
 set (WindowSources)
 set (WindowHeaders)
 set (GraphicsSources)
@@ -80,6 +83,7 @@ set(PLOT_MIMO_SOURCES
     ${PLOT_MIMO_LAYERS_SOURCES}
     ${PLOT_MIMO_INTERFACE_SOURCES}
     ${PLOT_MIMO_UTILS_SOURCES}
+    ${PLOT_MIMO_EVENTS_SOURCES}
     ${WindowSources}
     ${GraphicsSources}
     ${ImGUISources} 
@@ -91,6 +95,7 @@ set(PLOT_MIMO_HEADERS
     ${PLOT_MIMO_LAYERS_HEADERS}
     ${PLOT_MIMO_INTERFACE_HEADERS}
     ${PLOT_MIMO_UTILS_HEADERS}
+    ${PLOT_MIMO_EVENTS_HEADERS}
     ${WindowHeaders}
     ${GraphicsHeaders}
     ${ImGUIHeaders} 
@@ -116,5 +121,6 @@ if(WIN32)
 else()
     add_executable(OpenMIMOPlot ${PLOT_MIMO_HEADERS} ${PLOT_MIMO_SOURCES})
 endif()
+
 target_include_directories(OpenMIMOPlot PRIVATE ./OpenMIMOPlot IMPLOT_INCLUDE_DIR IMGUI_INCLUDE_DIR ./vendor/glfw/include ./vendor/glad/include ./vendor/nlohmann_json/include)
 target_link_libraries(OpenMIMOPlot PRIVATE implot imgui glad glfw ${WinLibs})

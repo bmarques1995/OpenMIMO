@@ -4,10 +4,37 @@
 #include "imgui.h"
 #include <iostream>
 
-using std::cout;
+#include "Utils/Console.hpp"
+
+void OpenMIMO::Application::OnClose(Event& eventHandler)
+{
+    Console::Log(eventHandler.GetEventInfo());
+}
+
+void OpenMIMO::Application::OnResize(Event& eventHandler)
+{
+    Console::Log(eventHandler.GetEventInfo());
+}
+
+void OpenMIMO::Application::OnFramebufferResize(Event& eventHandler)
+{
+    Console::Log(eventHandler.GetEventInfo());
+}
+
+void OpenMIMO::Application::OnMinimize(Event& eventHandler)
+{
+    Console::Log(eventHandler.GetEventInfo());
+}
+
+void OpenMIMO::Application::OnRestore(Event& eventHandler)
+{
+    Console::Log(eventHandler.GetEventInfo());
+}
 
 OpenMIMO::Application::Application()
 {
+    std::list<FunctionStarter> m_Starter;
+    m_Starter.push_back(FunctionStarter(std::bind(&Application::OnClose, this, std::placeholders::_1), EventType::WindowCloseEvent));
     m_GraphicsInjector = new GraphicsInjector();
 
     ApplicationStarter::BuildStarter();

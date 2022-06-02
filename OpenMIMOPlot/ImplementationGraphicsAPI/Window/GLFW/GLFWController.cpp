@@ -1,4 +1,8 @@
 #include "GLFWController.hpp"
+#include <iostream>
+#include <functional>
+
+#include "Utils/Console.hpp"
 
 OpenMIMO::GLFWController::GLFWController(const WindowProps& props)
 {
@@ -22,6 +26,7 @@ OpenMIMO::GLFWController::GLFWController(const WindowProps& props)
     glfwSetErrorCallback([](int error, const char* description){
         fprintf(stderr, "Glfw Error %d: %s\n", error, description);
     });
+    RegisterCallbacks();
 }
 
 OpenMIMO::GLFWController::~GLFWController()
@@ -62,4 +67,28 @@ void OpenMIMO::GLFWController::Update()
 void OpenMIMO::GLFWController::Present()
 {
     glfwSwapBuffers(m_Window);
+}
+
+void OpenMIMO::GLFWController::RegisterCallbacks()
+{
+    glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow* window, int iconify)
+    {
+         iconify == GLFW_FALSE ? Console::Log("Window Restored\n") : Console::Log("Window Minimized\n");
+    });
+    glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
+    {
+        Console::Log("Window should close\n");
+    });
+    glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
+    {
+        std::stringstream buffer;
+        buffer << "New window size (" << width << "," << height << ")\n";
+        Console::Log(buffer.str());
+    });
+    glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
+    {
+        std::stringstream buffer;
+        buffer << "New framebuffer size (" << width << "," << height << ")\n";
+        Console::Log(buffer.str());
+    });
 }
