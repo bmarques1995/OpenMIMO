@@ -15,7 +15,7 @@ namespace OpenMIMO
 {
     class GLFWController : public WindowController
     {
-        friend class GL4Context;
+        friend class Application;
     public:
         GLFWController(EventDispatcher* dispatcher, const WindowProps& props = WindowProps());
         ~GLFWController();

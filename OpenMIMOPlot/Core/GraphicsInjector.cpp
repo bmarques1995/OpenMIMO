@@ -25,7 +25,7 @@ OpenMIMO::GraphicsInjector::GraphicsInjector()
     m_FunctionMap[currentGraphicsPair] = [](EventDispatcher* dispatcher, const WindowProps& props) -> GraphicsStartup
     {
         WindowController* controller = new GLFWController(dispatcher, props);
-        GraphicsContext* context = new GL4Context(controller);
+        GraphicsContext* context = new GL4Context(std::any_cast<GLFWwindow*>(controller->GetNativeWindow()));
         ImGUILayer* layer = new GLFWGL4ImGUILayer(std::any_cast<GLFWwindow*>(controller->GetNativeWindow()));
         GraphicsStartup startup(controller, context, layer);
         return startup;
@@ -37,7 +37,7 @@ OpenMIMO::GraphicsInjector::GraphicsInjector()
     m_FunctionMap[currentGraphicsPair] = [](EventDispatcher* dispatcher, const WindowProps& props) -> GraphicsStartup
     {
         WindowController* controller = new WIN32Controller(dispatcher, props);
-        GraphicsContext* context = new D3D11Context(controller);
+        GraphicsContext* context = new D3D11Context(std::any_cast<HWND>(controller->GetNativeWindow()));
         GraphicsMinimal graphicsDevice = std::any_cast<GraphicsMinimal>(context->GetComponentConstructor());
         ImGUILayer* layer = new WIN32D3D11ImGUILayer(std::any_cast<HWND>(controller->GetNativeWindow()),graphicsDevice.Device, graphicsDevice.DeviceContext);
         GraphicsStartup startup(controller, context, layer);

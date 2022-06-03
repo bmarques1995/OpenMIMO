@@ -20,7 +20,7 @@ namespace OpenMIMO
 
     class WIN32Controller : public WindowController
     {
-        friend class D3D11Context;
+        friend class Application;
     private:
         //GLFWwindow* m_Window;
         uint32_t m_Width;

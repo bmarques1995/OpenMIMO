@@ -31,7 +31,7 @@ namespace OpenMIMO
         EventDispatcher* m_EventDispatcher;
 
         void OnClose(const Event& eventHandler);
-        void OnResize(const Event& eventHandler);
+        void OnWindowResize(const Event& eventHandler);
         void OnFramebufferResize(const Event& eventHandler);
         void OnMinimize(const Event& eventHandler);
         void OnRestore(const Event& eventHandler);

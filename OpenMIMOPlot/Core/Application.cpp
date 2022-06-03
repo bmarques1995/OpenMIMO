@@ -12,10 +12,10 @@ void OpenMIMO::Application::OnClose(const Event& eventHandler)
     Console::Log("\n");
 }
 
-void OpenMIMO::Application::OnResize(const Event& eventHandler)
+void OpenMIMO::Application::OnWindowResize(const Event& eventHandler)
 {
-    Console::Log(eventHandler.GetEventInfo());
-    Console::Log("\n");
+    std::pair<uint32_t, uint32_t> dimensions = std::any_cast<std::pair<uint32_t, uint32_t>>(eventHandler.GetEventData());
+    m_GraphicsContext->SetViewport(dimensions.first, dimensions.second);
 }
 
 void OpenMIMO::Application::OnFramebufferResize(const Event& eventHandler)
@@ -40,7 +40,7 @@ OpenMIMO::Application::Application()
 {
     std::list<FunctionStarter> m_Starter;
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnClose, this, std::placeholders::_1), EventType::WindowCloseEvent));
-    m_Starter.push_back(FunctionStarter(std::bind(&Application::OnResize, this, std::placeholders::_1), EventType::WindowResizeEvent));
+    m_Starter.push_back(FunctionStarter(std::bind(&Application::OnWindowResize, this, std::placeholders::_1), EventType::WindowResizeEvent));
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnMinimize, this, std::placeholders::_1), EventType::WindowMinimizeEvent));
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnRestore, this, std::placeholders::_1), EventType::WindowRestoreEvent));
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnFramebufferResize, this, std::placeholders::_1), EventType::FramebufferResizeEvent));

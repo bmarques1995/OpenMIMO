@@ -2,6 +2,7 @@
 #define GRAPHICS_CONTEXT_HPP
 
 #include <any>
+#include <cstdint>
 
 namespace OpenMIMO {
     class GraphicsContext
@@ -18,6 +19,7 @@ namespace OpenMIMO {
         virtual void Update() = 0;
         virtual void SetClearColor(float x, float y, float z, float w = 1.0f) = 0;
         virtual void Present() = 0;
+        virtual void SetViewport(uint32_t width, uint32_t height) = 0;
         virtual std::any GetComponentConstructor() const = 0;
     };
 }
