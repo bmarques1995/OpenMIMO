@@ -28,12 +28,13 @@ namespace OpenMIMO
 
         GraphicsInjector* m_GraphicsInjector;
         LayerStack m_LayerStack;
+        EventDispatcher* m_EventDispatcher;
 
-        void OnClose(Event& eventHandler);
-        void OnResize(Event& eventHandler);
-        void OnFramebufferResize(Event& eventHandler);
-        void OnMinimize(Event& eventHandler);
-        void OnRestore(Event& eventHandler);
+        void OnClose(const Event& eventHandler);
+        void OnResize(const Event& eventHandler);
+        void OnFramebufferResize(const Event& eventHandler);
+        void OnMinimize(const Event& eventHandler);
+        void OnRestore(const Event& eventHandler);
 
     public:
         Application();

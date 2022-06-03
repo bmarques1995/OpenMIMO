@@ -6,43 +6,54 @@
 
 #include "Utils/Console.hpp"
 
-void OpenMIMO::Application::OnClose(Event& eventHandler)
+void OpenMIMO::Application::OnClose(const Event& eventHandler)
 {
     Console::Log(eventHandler.GetEventInfo());
+    Console::Log("\n");
 }
 
-void OpenMIMO::Application::OnResize(Event& eventHandler)
+void OpenMIMO::Application::OnResize(const Event& eventHandler)
 {
     Console::Log(eventHandler.GetEventInfo());
+    Console::Log("\n");
 }
 
-void OpenMIMO::Application::OnFramebufferResize(Event& eventHandler)
+void OpenMIMO::Application::OnFramebufferResize(const Event& eventHandler)
 {
     Console::Log(eventHandler.GetEventInfo());
+    Console::Log("\n");
 }
 
-void OpenMIMO::Application::OnMinimize(Event& eventHandler)
+void OpenMIMO::Application::OnMinimize(const Event& eventHandler)
 {
     Console::Log(eventHandler.GetEventInfo());
+    Console::Log("\n");
 }
 
-void OpenMIMO::Application::OnRestore(Event& eventHandler)
+void OpenMIMO::Application::OnRestore(const Event& eventHandler)
 {
     Console::Log(eventHandler.GetEventInfo());
+    Console::Log("\n");
 }
 
 OpenMIMO::Application::Application()
 {
     std::list<FunctionStarter> m_Starter;
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnClose, this, std::placeholders::_1), EventType::WindowCloseEvent));
+    m_Starter.push_back(FunctionStarter(std::bind(&Application::OnResize, this, std::placeholders::_1), EventType::WindowResizeEvent));
+    m_Starter.push_back(FunctionStarter(std::bind(&Application::OnMinimize, this, std::placeholders::_1), EventType::WindowMinimizeEvent));
+    m_Starter.push_back(FunctionStarter(std::bind(&Application::OnRestore, this, std::placeholders::_1), EventType::WindowRestoreEvent));
+    m_Starter.push_back(FunctionStarter(std::bind(&Application::OnFramebufferResize, this, std::placeholders::_1), EventType::FramebufferResizeEvent));
     m_GraphicsInjector = new GraphicsInjector();
+
+    m_EventDispatcher = new EventDispatcher(m_Starter);
 
     ApplicationStarter::BuildStarter();
 
     json startupJson = ApplicationStarter::GetStartupJson();
 
     std::pair<std::string, std::string> APIs = { startupJson["WindowAPI"].get<std::string>() , startupJson["GraphicsAPI"].get<std::string>() };
-    GraphicsStartup startup =  m_GraphicsInjector->GetGraphics(APIs);
+    GraphicsStartup startup =  m_GraphicsInjector->GetGraphics(APIs, m_EventDispatcher);
 
     m_WindowController = startup.Controller;
     m_GraphicsContext = startup.Context;

@@ -2,7 +2,7 @@
 #define EVENT_HPP
 
 #include <string>
-
+#include <any>
 namespace OpenMIMO
 {
     enum class EventType
@@ -21,6 +21,7 @@ namespace OpenMIMO
     public:
         EventType GetEventType() const;
         const std::string& GetEventInfo() const;
+        virtual std::any GetEventData() const;
     protected:
         Event(EventType eventType, const std::string& eventInfo = "Generic Event");
         ~Event() = default;

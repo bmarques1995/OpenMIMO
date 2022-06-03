@@ -11,10 +11,10 @@ namespace OpenMIMO
 {
     struct FunctionStarter
     {
-        std::function<void(Event&)> Function;
+        std::function<void(const Event&)> Function;
         EventType Code;
 
-        FunctionStarter(const std::function<void(Event&)>& functionValue, EventType code) :
+        FunctionStarter(const std::function<void(const Event&)>& functionValue, EventType code) :
             Function(functionValue), Code(code)
         {}
     };
@@ -25,9 +25,9 @@ namespace OpenMIMO
         EventDispatcher(const std::list<FunctionStarter>& functionStarter);
         ~EventDispatcher() = default;
         
-        const std::function<void(Event&)>& GetDispatchFunction(const EventType eventType);
+        void Dispatch(const Event& e);
     private:
-        std::unordered_map<EventType, std::function<void(Event &)>> m_EventActions;
+        std::unordered_map<EventType, std::function<void(const Event &)>> m_EventActions;
     };   
 }
 

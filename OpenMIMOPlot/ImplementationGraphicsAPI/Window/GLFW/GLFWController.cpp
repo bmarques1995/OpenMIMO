@@ -4,11 +4,14 @@
 
 #include "Utils/Console.hpp"
 
-OpenMIMO::GLFWController::GLFWController(const WindowProps& props)
+#include "Events/ApplicationEvent.hpp"
+
+OpenMIMO::GLFWController::GLFWController(EventDispatcher* dispatcher, const WindowProps& props)
 {
     m_Width = props.Width;
     m_Height = props.Height;
     m_Title = props.Title;
+    m_EventDispatcher = dispatcher;
 
     /* Initialize the library */
     if (!glfwInit())
@@ -26,6 +29,7 @@ OpenMIMO::GLFWController::GLFWController(const WindowProps& props)
     glfwSetErrorCallback([](int error, const char* description){
         fprintf(stderr, "Glfw Error %d: %s\n", error, description);
     });
+    glfwSetWindowUserPointer(m_Window, m_EventDispatcher);
     RegisterCallbacks();
 }
 
@@ -73,22 +77,35 @@ void OpenMIMO::GLFWController::RegisterCallbacks()
 {
     glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow* window, int iconify)
     {
-         iconify == GLFW_FALSE ? Console::Log("Window Restored\n") : Console::Log("Window Minimized\n");
+        EventDispatcher* dispatcher = reinterpret_cast<EventDispatcher*>(glfwGetWindowUserPointer(window));
+        //iconify == GLFW_FALSE ? Console::Log("Window Restored\n") : Console::Log("Window Minimized\n");
+        if(iconify == GLFW_FALSE)
+        {
+            WindowRestoreEvent e;
+            dispatcher->Dispatch(e);
+        }
+        else
+        {
+            WindowMinimizeEvent e;
+            dispatcher->Dispatch(e);
+        }
     });
     glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
     {
-        Console::Log("Window should close\n");
+        EventDispatcher* dispatcher = reinterpret_cast<EventDispatcher*>(glfwGetWindowUserPointer(window));
+        WindowCloseEvent e;
+        dispatcher->Dispatch(e);
     });
     glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
     {
-        std::stringstream buffer;
-        buffer << "New window size (" << width << "," << height << ")\n";
-        Console::Log(buffer.str());
+        EventDispatcher* dispatcher = reinterpret_cast<EventDispatcher*>(glfwGetWindowUserPointer(window));
+        WindowResizeEvent e((uint32_t) width, (uint32_t) height);;
+        dispatcher->Dispatch(e);
     });
     glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
     {
-        std::stringstream buffer;
-        buffer << "New framebuffer size (" << width << "," << height << ")\n";
-        Console::Log(buffer.str());
+        EventDispatcher* dispatcher = reinterpret_cast<EventDispatcher*>(glfwGetWindowUserPointer(window));
+        FramebufferResizeEvent e((uint32_t) width, (uint32_t) height);
+        dispatcher->Dispatch(e);
     });
 }

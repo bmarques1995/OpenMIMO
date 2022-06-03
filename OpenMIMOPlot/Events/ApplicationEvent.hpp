@@ -29,11 +29,10 @@ namespace OpenMIMO
     class WindowResizeEvent : public Event
     {
     public:
+        virtual std::any GetEventData() const override;
+
         WindowResizeEvent(uint32_t width, uint32_t height);
         ~WindowResizeEvent() = default;
-
-        const uint32_t GetWidth() const;
-        const uint32_t GetHeight() const;
     
     private:
         uint32_t m_Width;
@@ -43,13 +42,10 @@ namespace OpenMIMO
     class FramebufferResizeEvent : public Event
     {
     public:
-        
+        virtual std::any GetEventData() const override;
+
         FramebufferResizeEvent(uint32_t width, uint32_t height);
         ~FramebufferResizeEvent() = default;
-
-        const uint32_t GetWidth() const;
-        const uint32_t GetHeight() const;
-    
     private:
         uint32_t m_Width;
         uint32_t m_Height;

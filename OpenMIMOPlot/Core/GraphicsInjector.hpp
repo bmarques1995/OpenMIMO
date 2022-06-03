@@ -7,6 +7,7 @@
 #include "ImGUILayer.hpp"
 #include "InterfaceGraphicsAPI/WindowController.hpp"
 #include "InterfaceGraphicsAPI/GraphicsContext.hpp"
+#include "Events/EventDispatcher.hpp"
 
 namespace OpenMIMO
 {
@@ -30,14 +31,14 @@ namespace OpenMIMO
     class GraphicsInjector
     {
     private:
-        std::unordered_map<std::string_view, std::function<GraphicsStartup(const WindowProps&)>> m_FunctionMap;
+        std::unordered_map<std::string_view, std::function<GraphicsStartup(EventDispatcher*, const WindowProps&)>> m_FunctionMap;
 
         void ProcessGraphicsPair(const std::pair<std::string, std::string>& map, std::string* returnType);
     public:
         GraphicsInjector();
         ~GraphicsInjector();
 
-        GraphicsStartup GetGraphics(const std::pair<std::string, std::string>& map, const WindowProps props = WindowProps());
+        GraphicsStartup GetGraphics(const std::pair<std::string, std::string>& map, EventDispatcher* dispatcher, const WindowProps props = WindowProps());
     };
 
 }

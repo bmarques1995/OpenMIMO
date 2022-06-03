@@ -9,6 +9,7 @@
 #include <string>
 
 #include "InterfaceGraphicsAPI/GraphicsContext.hpp"
+#include "Events/EventDispatcher.hpp"
 
 namespace OpenMIMO
 {
@@ -16,7 +17,7 @@ namespace OpenMIMO
     {
         friend class GL4Context;
     public:
-        GLFWController(const WindowProps& props = WindowProps());
+        GLFWController(EventDispatcher* dispatcher, const WindowProps& props = WindowProps());
         ~GLFWController();
 
         virtual bool ShouldClose() const override;
@@ -37,6 +38,7 @@ namespace OpenMIMO
         uint32_t m_Width;
         uint32_t m_Height;
         std::string m_Title;
+        EventDispatcher* m_EventDispatcher;
 
         void RegisterCallbacks();
     };

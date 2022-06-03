@@ -6,7 +6,7 @@ OpenMIMO::EventDispatcher::EventDispatcher(const std::list<OpenMIMO::FunctionSta
         m_EventActions[i.Code] = i.Function;
 }
         
-const std::function<void(OpenMIMO::Event&)>& OpenMIMO::EventDispatcher::GetDispatchFunction(const EventType eventType)
+void OpenMIMO::EventDispatcher::Dispatch(const Event& e)
 {
-    return m_EventActions[eventType];
+    m_EventActions[e.GetEventType()](e);
 }

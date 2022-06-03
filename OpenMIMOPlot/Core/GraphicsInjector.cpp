@@ -22,9 +22,9 @@ OpenMIMO::GraphicsInjector::GraphicsInjector()
     //Register All API combinations in this constructor
 
     currentGraphicsPair = "GLFW" "GL4";
-    m_FunctionMap[currentGraphicsPair] = [](const WindowProps& props) -> GraphicsStartup
+    m_FunctionMap[currentGraphicsPair] = [](EventDispatcher* dispatcher, const WindowProps& props) -> GraphicsStartup
     {
-        WindowController* controller = new GLFWController(props);
+        WindowController* controller = new GLFWController(dispatcher, props);
         GraphicsContext* context = new GL4Context(controller);
         ImGUILayer* layer = new GLFWGL4ImGUILayer(std::any_cast<GLFWwindow*>(controller->GetNativeWindow()));
         GraphicsStartup startup(controller, context, layer);
@@ -34,9 +34,9 @@ OpenMIMO::GraphicsInjector::GraphicsInjector()
 #ifdef WINDOWS_PLOT
     currentGraphicsPair = "WIN32" "D3D11";
 
-    m_FunctionMap[currentGraphicsPair] = [](const WindowProps& props) -> GraphicsStartup
+    m_FunctionMap[currentGraphicsPair] = [](EventDispatcher* dispatcher, const WindowProps& props) -> GraphicsStartup
     {
-        WindowController* controller = new WIN32Controller(props);
+        WindowController* controller = new WIN32Controller(dispatcher, props);
         GraphicsContext* context = new D3D11Context(controller);
         GraphicsMinimal graphicsDevice = std::any_cast<GraphicsMinimal>(context->GetComponentConstructor());
         ImGUILayer* layer = new WIN32D3D11ImGUILayer(std::any_cast<HWND>(controller->GetNativeWindow()),graphicsDevice.Device, graphicsDevice.DeviceContext);
@@ -53,14 +53,14 @@ OpenMIMO::GraphicsInjector::~GraphicsInjector()
 
 }
 
-OpenMIMO::GraphicsStartup OpenMIMO::GraphicsInjector::GetGraphics(const std::pair<std::string, std::string>& map, const WindowProps props)
+OpenMIMO::GraphicsStartup OpenMIMO::GraphicsInjector::GetGraphics(const std::pair<std::string, std::string>& map, EventDispatcher* dispatcher, const WindowProps props)
 {
     std::string pairName;
     ProcessGraphicsPair(map, &pairName);
     std::transform(pairName.begin(), pairName.end(), pairName.begin(), ::toupper);
     std::string_view pair = pairName;
     if (m_FunctionMap.find(pair) != m_FunctionMap.end())
-        return m_FunctionMap[pair](props);
+        return m_FunctionMap[pair](dispatcher, props);
     else
         return GraphicsStartup(nullptr, nullptr, nullptr);
 }

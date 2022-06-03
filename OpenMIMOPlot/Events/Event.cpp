@@ -14,3 +14,8 @@ const std::string& OpenMIMO::Event::GetEventInfo() const
 {
     return m_EventInfo;
 }
+
+std::any OpenMIMO::Event::GetEventData() const
+{
+    return true;
+}
