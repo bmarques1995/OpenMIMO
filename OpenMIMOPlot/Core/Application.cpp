@@ -8,32 +8,26 @@
 
 void OpenMIMO::Application::OnClose(const Event& eventHandler)
 {
-    Console::Log(eventHandler.GetEventInfo());
-    Console::Log("\n");
+    m_WindowController->ReceiveCloseEvent(true);
 }
 
 void OpenMIMO::Application::OnWindowResize(const Event& eventHandler)
 {
     std::pair<uint32_t, uint32_t> dimensions = std::any_cast<std::pair<uint32_t, uint32_t>>(eventHandler.GetEventData());
+    m_WindowController->ResetWindowDimensions(dimensions.first, dimensions.second);
     m_GraphicsContext->SetViewport(dimensions.first, dimensions.second);
 }
 
 void OpenMIMO::Application::OnFramebufferResize(const Event& eventHandler)
 {
-    Console::Log(eventHandler.GetEventInfo());
-    Console::Log("\n");
+    std::pair<uint32_t, uint32_t> dimensions = std::any_cast<std::pair<uint32_t, uint32_t>>(eventHandler.GetEventData());
+    m_WindowController->ResetWindowDimensions(dimensions.first, dimensions.second);
+    m_GraphicsContext->SetViewport(dimensions.first, dimensions.second);
 }
 
 void OpenMIMO::Application::OnMinimize(const Event& eventHandler)
 {
-    Console::Log(eventHandler.GetEventInfo());
-    Console::Log("\n");
-}
-
-void OpenMIMO::Application::OnRestore(const Event& eventHandler)
-{
-    Console::Log(eventHandler.GetEventInfo());
-    Console::Log("\n");
+    m_Minimized = std::any_cast<bool>(eventHandler.GetEventData());
 }
 
 OpenMIMO::Application::Application()
@@ -42,7 +36,6 @@ OpenMIMO::Application::Application()
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnClose, this, std::placeholders::_1), EventType::WindowCloseEvent));
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnWindowResize, this, std::placeholders::_1), EventType::WindowResizeEvent));
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnMinimize, this, std::placeholders::_1), EventType::WindowMinimizeEvent));
-    m_Starter.push_back(FunctionStarter(std::bind(&Application::OnRestore, this, std::placeholders::_1), EventType::WindowRestoreEvent));
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnFramebufferResize, this, std::placeholders::_1), EventType::FramebufferResizeEvent));
     m_GraphicsInjector = new GraphicsInjector();
 

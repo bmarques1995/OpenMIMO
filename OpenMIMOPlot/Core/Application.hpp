@@ -20,6 +20,14 @@ namespace OpenMIMO
 {
     class Application
     {
+    public:
+        Application();
+        ~Application();
+        void Run();
+
+        void PushLayer(Layer* layer);
+        void PushOverlay(Layer* overlay);
+
     private:
         WindowController* m_WindowController;
         GraphicsContext* m_GraphicsContext;
@@ -30,19 +38,12 @@ namespace OpenMIMO
         LayerStack m_LayerStack;
         EventDispatcher* m_EventDispatcher;
 
+        bool m_Minimized = false;
+
         void OnClose(const Event& eventHandler);
         void OnWindowResize(const Event& eventHandler);
         void OnFramebufferResize(const Event& eventHandler);
         void OnMinimize(const Event& eventHandler);
-        void OnRestore(const Event& eventHandler);
-
-    public:
-        Application();
-        ~Application();
-        void Run();
-
-        void PushLayer(Layer* layer);
-        void PushOverlay(Layer* overlay);
     };
 }
 

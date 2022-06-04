@@ -30,6 +30,9 @@ namespace OpenMIMO
         virtual void Update() override;
 
         virtual void Present() override;
+    protected:
+        virtual void ReceiveCloseEvent(bool shouldClose) override;
+        virtual void ResetWindowDimensions(uint32_t width, uint32_t height) override;
     private:
         GraphicsContext* m_Context;
 
@@ -39,6 +42,8 @@ namespace OpenMIMO
         uint32_t m_Height;
         std::string m_Title;
         EventDispatcher* m_EventDispatcher;
+
+        bool m_ShouldClose = false;
 
         void RegisterCallbacks();
     };

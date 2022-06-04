@@ -15,15 +15,12 @@ namespace OpenMIMO
     class WindowMinimizeEvent : public Event
     {
     public:
-        WindowMinimizeEvent();
-        ~WindowMinimizeEvent() = default;
-    };
+        virtual std::any GetEventData() const override;
 
-    class WindowRestoreEvent : public Event
-    {
-    public:
-        WindowRestoreEvent();
-        ~WindowRestoreEvent() = default;
+        WindowMinimizeEvent(bool isMinimized);
+        ~WindowMinimizeEvent() = default;
+    private:
+        bool m_IsMinimized;
     };
 
     class WindowResizeEvent : public Event

@@ -73,22 +73,26 @@ void OpenMIMO::GLFWController::Present()
     glfwSwapBuffers(m_Window);
 }
 
+void OpenMIMO::GLFWController::ReceiveCloseEvent(bool shouldClose)
+{
+    m_ShouldClose = shouldClose;
+}
+
+void OpenMIMO::GLFWController::ResetWindowDimensions(uint32_t width, uint32_t height)
+{
+    m_Width = width;
+    m_Height = height;
+}
+
 void OpenMIMO::GLFWController::RegisterCallbacks()
 {
     glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow* window, int iconify)
     {
         EventDispatcher* dispatcher = reinterpret_cast<EventDispatcher*>(glfwGetWindowUserPointer(window));
-        //iconify == GLFW_FALSE ? Console::Log("Window Restored\n") : Console::Log("Window Minimized\n");
-        if(iconify == GLFW_FALSE)
-        {
-            WindowRestoreEvent e;
-            dispatcher->Dispatch(e);
-        }
-        else
-        {
-            WindowMinimizeEvent e;
-            dispatcher->Dispatch(e);
-        }
+        
+        WindowMinimizeEvent e(iconify == GLFW_TRUE ? true: false);
+        dispatcher->Dispatch(e);
+        
     });
     glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
     {

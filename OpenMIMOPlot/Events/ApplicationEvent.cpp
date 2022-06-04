@@ -8,14 +8,13 @@ OpenMIMO::WindowCloseEvent::WindowCloseEvent() :
 
 }
 
-OpenMIMO::WindowMinimizeEvent::WindowMinimizeEvent() :
-    Event(EventType::WindowMinimizeEvent, "Window minimized")
+std::any OpenMIMO::WindowMinimizeEvent::GetEventData() const
 {
-
+    return m_IsMinimized;
 }
 
-OpenMIMO::WindowRestoreEvent::WindowRestoreEvent() :
-    Event(EventType::WindowRestoreEvent, "Window restored")
+OpenMIMO::WindowMinimizeEvent::WindowMinimizeEvent(bool isMinimized) :
+    Event(EventType::WindowMinimizeEvent, "Window minimized"), m_IsMinimized(isMinimized)
 {
 
 }

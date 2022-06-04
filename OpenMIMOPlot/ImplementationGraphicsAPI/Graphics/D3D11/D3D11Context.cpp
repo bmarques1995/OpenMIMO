@@ -1,10 +1,8 @@
 #include "D3D11Context.hpp"
-#include <GLFW/glfw3.h>
 
-OpenMIMO::D3D11Context::D3D11Context(WindowController* controller) :
-    m_WindowController(controller)
+OpenMIMO::D3D11Context::D3D11Context(HWND window) :
+    m_Window(window)
 {
-    HWND window = std::any_cast<HWND>(m_WindowController->GetNativeWindow());
     // Setup swap chain
     DXGI_SWAP_CHAIN_DESC sd;
     ZeroMemory(&sd, sizeof(sd));
@@ -16,7 +14,7 @@ OpenMIMO::D3D11Context::D3D11Context(WindowController* controller) :
     sd.BufferDesc.RefreshRate.Denominator = 1;
     sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
     sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-    sd.OutputWindow = window;
+    sd.OutputWindow = m_Window;
     sd.SampleDesc.Count = 1;
     sd.SampleDesc.Quality = 0;
     sd.Windowed = TRUE;
@@ -57,14 +55,14 @@ void OpenMIMO::D3D11Context::CreateRenderTarget()
 {
     ID3D11Texture2D* pBackBuffer;
     m_SwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
-    m_Device->CreateRenderTargetView(pBackBuffer, NULL, m_MainRenderTargetView.GetAddressOf());
+    m_Device->CreateRenderTargetView(pBackBuffer, NULL, m_RenderTargetView.GetAddressOf());
     pBackBuffer->Release();
 }
 
 void OpenMIMO::D3D11Context::Update()
 {
-    m_DeviceContext->OMSetRenderTargets(1, m_MainRenderTargetView.GetAddressOf(), NULL);
-    m_DeviceContext->ClearRenderTargetView(m_MainRenderTargetView.Get(), m_ClearColor);
+    m_DeviceContext->OMSetRenderTargets(1, m_RenderTargetView.GetAddressOf(), NULL);
+    m_DeviceContext->ClearRenderTargetView(m_RenderTargetView.Get(), m_ClearColor);
 }
 
 void OpenMIMO::D3D11Context::SetClearColor(float x, float y, float z, float w)
@@ -73,6 +71,23 @@ void OpenMIMO::D3D11Context::SetClearColor(float x, float y, float z, float w)
     m_ClearColor[1] = y;
     m_ClearColor[2] = z;
     m_ClearColor[3] = w;
+}
+
+void OpenMIMO::D3D11Context::SetViewport(uint32_t width, uint32_t height)
+{
+    D3D11_VIEWPORT viewport;
+    viewport.TopLeftX = .0f;
+    viewport.Width = (float)width;
+    viewport.TopLeftY = .0f;
+    viewport.Height = (float)height;
+    viewport.MinDepth = .0f;
+    viewport.MaxDepth = 1.0f;
+
+    m_DeviceContext->RSSetViewports(1,&viewport);
+
+    m_RenderTargetView->Release();
+    m_SwapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
+    CreateRenderTarget();
 }
 
 std::any OpenMIMO::D3D11Context::GetComponentConstructor() const

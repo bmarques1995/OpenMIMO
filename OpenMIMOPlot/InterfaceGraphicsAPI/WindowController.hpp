@@ -23,6 +23,7 @@ namespace OpenMIMO
 
     class WindowController
     {
+        friend class Application;
     public:
 
         virtual bool ShouldClose() const = 0;
@@ -35,6 +36,9 @@ namespace OpenMIMO
         virtual void Update() = 0;
 
         virtual void Present() = 0;
+    protected:
+        virtual void ReceiveCloseEvent(bool shouldClose) = 0;
+        virtual void ResetWindowDimensions(uint32_t width, uint32_t height) = 0;
     };
 }
 /*static void glfw_error_callback(int error, const char* description)
