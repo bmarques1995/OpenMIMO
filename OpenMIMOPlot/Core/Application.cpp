@@ -32,6 +32,10 @@ void OpenMIMO::Application::OnMinimize(const Event& eventHandler)
 
 OpenMIMO::Application::Application()
 {
+    ConsoleWrapper::Init();
+    Console_Log("Teste de Log {}", 3);
+    Console_Warn("Teste de Warn {}", 3);
+    Console_Error("Teste de Error {}", 3);
     std::list<FunctionStarter> m_Starter;
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnClose, this, std::placeholders::_1), EventType::WindowCloseEvent));
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnWindowResize, this, std::placeholders::_1), EventType::WindowResizeEvent));
@@ -73,6 +77,7 @@ OpenMIMO::Application::~Application()
 {
     m_ImPlotLayer->OnDetach();
     m_ImGUILayer->OnDetach();
+    ConsoleWrapper::End();
 
     delete m_ImPlotLayer;
     delete m_ImGUILayer;
