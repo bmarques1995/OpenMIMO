@@ -15,7 +15,7 @@ void OpenMIMO::ConsoleWrapper::Init()
 #ifdef WINDOWS_PLOT
 	logSinks.push_back(std::make_shared<spdlog::sinks::msvc_sink_mt>());
 #else
-	logSinks.push_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>(s_Logger));
+	logSinks.push_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());
 #endif
 
 
