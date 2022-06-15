@@ -89,7 +89,11 @@
         "splines": "cpp",
         "codecvt": "cpp",
         "csignal": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "bitset": "cpp",
+        "charconv": "cpp",
+        "regex": "cpp",
+        "shared_mutex": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

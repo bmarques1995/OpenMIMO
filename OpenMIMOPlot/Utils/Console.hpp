@@ -2,8 +2,15 @@
 #define CONSOLE_HPP
 
 #include <spdlog/spdlog.h>
+#include <spdlog/common.h>
+#include <spdlog/details/log_msg.h>
+#include <spdlog/details/backtracer.h>
 #include <cstdarg>
 #include <memory>
+#include <string>
+
+template<typename... Args>
+using format_string_t = std::string_view;
 
 namespace OpenMIMO
 {
@@ -13,15 +20,39 @@ namespace OpenMIMO
         static void Init();
         static void End();
 
-        static std::shared_ptr<spdlog::logger> GetLogger();
+        template<typename... Args>
+        static void Debug(format_string_t<Args...> fmt, Args &&... args)
+        {
+            s_Logger->trace(fmt, std::forward<Args>(args)...);
+        }
+
+        template<typename... Args>
+        static void Log(format_string_t<Args...> fmt, Args &&... args)
+        {
+            s_Logger->info(fmt, std::forward<Args>(args)...);
+        }
+
+        template<typename... Args>
+        static void Warn(format_string_t<Args...> fmt, Args &&... args)
+        {
+            s_Logger->warn(fmt, std::forward<Args>(args)...);
+        }
+
+        template<typename... Args>
+        static void Error(format_string_t<Args...> fmt, Args &&... args)
+        {
+            s_Logger->error(fmt, std::forward<Args>(args)...);
+        }
+
+        template<typename... Args>
+        static void Critical(format_string_t<Args...> fmt, Args &&... args)
+        {
+            s_Logger->critical(fmt, std::forward<Args>(args)...);
+        }
+
     private:
         static std::shared_ptr<spdlog::logger> s_Logger;
     };
 }
-
-#define Console_Log(...) ::OpenMIMO::ConsoleWrapper::GetLogger()->info(__VA_ARGS__);::OpenMIMO::ConsoleWrapper::GetLogger()->flush();
-#define Console_Warn(...) ::OpenMIMO::ConsoleWrapper::GetLogger()->warn(__VA_ARGS__);::OpenMIMO::ConsoleWrapper::GetLogger()->flush();
-#define Console_Error(...) ::OpenMIMO::ConsoleWrapper::GetLogger()->error(__VA_ARGS__);::OpenMIMO::ConsoleWrapper::GetLogger()->flush();
-
 
 #endif

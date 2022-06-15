@@ -1,4 +1,7 @@
 #include "Console.hpp"
+#include <regex>
+#include <cstdarg>
+#include <iostream>
 
 #ifdef WINDOWS_PLOT
 #include <spdlog/sinks/msvc_sink.h>
@@ -33,9 +36,3 @@ void OpenMIMO::ConsoleWrapper::End()
 {
 	s_Logger.reset();
 }
-
-std::shared_ptr<spdlog::logger> OpenMIMO::ConsoleWrapper::GetLogger()
-{
-	return s_Logger;
-}
-

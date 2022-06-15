@@ -33,9 +33,13 @@ void OpenMIMO::Application::OnMinimize(const Event& eventHandler)
 OpenMIMO::Application::Application()
 {
     ConsoleWrapper::Init();
-    Console_Log("Teste de Log {}", 3);
-    Console_Warn("Teste de Warn {}", 3);
-    Console_Error("Teste de Error {}", 3);
+    
+    ConsoleWrapper::Debug("Teste de Debug {}", 6);
+    ConsoleWrapper::Log("Teste de Log {}, {}", 3, "E aí panacas");
+    
+    ConsoleWrapper::Warn("Teste de Warn {}", 3);
+    ConsoleWrapper::Error("Teste de Error {}", 3);
+    ConsoleWrapper::Critical("Teste de Critical {}", 39);
     std::list<FunctionStarter> m_Starter;
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnClose, this, std::placeholders::_1), EventType::WindowCloseEvent));
     m_Starter.push_back(FunctionStarter(std::bind(&Application::OnWindowResize, this, std::placeholders::_1), EventType::WindowResizeEvent));
