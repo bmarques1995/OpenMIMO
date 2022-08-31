@@ -10,16 +10,6 @@ TEST(DynamicSystem, NumeratorDimensionError)
     ASSERT_THROW(new OpenMIMO::DynamicSystem<double>(tf_numerator, tf_denominator), OpenMIMO::BadNumeratorException);
 }
 
-/*
-TEST(DynamicSystem, TypeInsertionError)
-{   
-    Eigen::MatrixXd dynamicMatrix(3,4);
-    Eigen::MatrixXd inputMatrix;
-    Eigen::MatrixXd outputMatrix;
-    ASSERT_THROW(new DynamicSystem<std::complex<float>>(dynamicMatrix, inputMatrix, outputMatrix), BadTypeStartException);
-}
-*/
-
 TEST(DynamicSystem, DynamicMatrixDimensionError)
 {   
     Eigen::MatrixXd dynamicMatrix(3,4);
