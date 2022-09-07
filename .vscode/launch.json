@@ -9,7 +9,7 @@
             "name": "C/C++: g++ build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/out/build/OpenMIMOPlot",
+            "program": "${workspaceFolder}/out/build/TestOpenMIMO",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

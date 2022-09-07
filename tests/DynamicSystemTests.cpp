@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <OpenMIMO/DynamicSystem.hpp>
+#include <OpenMIMO/Polynomial.hpp>
 #include <OpenMIMO/utils/ComplexSortClassifier.hpp>
+#include <OpenMIMO/utils/Sort.hpp>
 #include <iostream>
 
 TEST(DynamicSystem, NumeratorDimensionError)
@@ -191,9 +193,9 @@ TEST(DynamicSystem, ExpectedEigenvalues)
     try
     {
         dynamicSystem = new OpenMIMO::DynamicSystem(dynamicMatrix, inputMatrix, outputMatrix);
-        std::sort(expectedEigenvalues.begin(), expectedEigenvalues.end(), OpenMIMO::ComplexGreater<double>);
+        OpenMIMO::Sorter::Sort(expectedEigenvalues.begin(), expectedEigenvalues.end(), OpenMIMO::FloatOperator::ComplexIsLess<double>, (size_t)expectedEigenvalues.size());
         auto eigenvalues = dynamicSystem->GetEigenvalues();
-        std::sort(eigenvalues.begin(), eigenvalues.end(), OpenMIMO::ComplexGreater<double>);
+        OpenMIMO::Sorter::Sort(eigenvalues.begin(), eigenvalues.end(), OpenMIMO::FloatOperator::ComplexIsLess<double>, (size_t)eigenvalues.size());
         ASSERT_TRUE(expectedEigenvalues.isApprox(eigenvalues,.0001));
         delete dynamicSystem;
     }

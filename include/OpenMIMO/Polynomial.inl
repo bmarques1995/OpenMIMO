@@ -1,20 +1,17 @@
 template<typename T>
-inline OpenMIMO::Polynomial<T>::Polynomial(std::list<T> elements)
+inline OpenMIMO::Polynomial<T>::Polynomial(const std::initializer_list<T>& elements, T tolerance) :
+    m_Tolerance(tolerance)
 {
-    m_Polynomial.resize(elements.size());
-    size_t it = 0;
-    for (auto&& i : elements)
-    {
-        m_Polynomial(m_Polynomial.rows() - 1 - it) = i;
-        it++;
-    }
-    m_PolynomialLinear = true;
+    InitializePolynomial(elements);
 }
 
 template<typename T>
 inline OpenMIMO::Polynomial<T>::Polynomial()
 {
+    m_Polynomial.resize(1);
+    m_Polynomial.setZero();
     m_PolynomialLinear = true;
+    m_Tolerance = (T)1e-6;
 }
 
 template<typename T>
@@ -91,8 +88,79 @@ inline void OpenMIMO::Polynomial<T>::operator*=(Polynomial& p1)
 }
 
 template<typename T>
+inline void OpenMIMO::Polynomial<T>::operator=(const std::initializer_list<T>& elements)
+{
+    this->InitializePolynomial(elements);
+}
+
+template<typename T>
 inline const Eigen::Matrix<T, -1, 1>& OpenMIMO::Polynomial<T>::GetPolynomial() const
 {
 	return m_Polynomial;
 }
 
+template<typename T>
+const size_t OpenMIMO::Polynomial<T>::GetPolynomialSize() const
+{
+    return (size_t) m_Polynomial.rows();
+}
+
+template<typename T>
+Eigen::Matrix<std::complex<T>, -1, 1> OpenMIMO::Polynomial<T>::GetRoots() const
+{
+    Eigen::Matrix<T, -1, -1> rootsMatrix;
+    rootsMatrix.resize((size_t) m_Polynomial.rows() - 1, (size_t) m_Polynomial.rows() - 1);
+    rootsMatrix.setZero();
+
+    for(size_t i = 0; i < (size_t)rootsMatrix.rows() - 1; ++i)
+    {
+        rootsMatrix(i, i +1) = (T)1.0;
+    }
+
+    for(size_t i = 0, rowsMatrixA = (size_t)(m_Polynomial.rows() - 1); i < rowsMatrixA; ++i)
+    {
+        rootsMatrix(rowsMatrixA - 1, i) = (T)-1.0 * m_Polynomial(i)/m_Polynomial(rowsMatrixA);
+    }
+    Eigen::Matrix<std::complex<T>, -1, 1> roots = rootsMatrix.eigenvalues();
+    Sorter::Sort(roots.begin(), roots.end(), FloatOperator::ComplexIsLess<double>, (size_t)roots.size());
+    return roots;
+}
+
+template<typename T>
+inline void OpenMIMO::Polynomial<T>::InsertRoot(pointer_based_stl_iterator<Eigen::Matrix<std::complex<T>, -1, 1>>& root, const pointer_based_stl_iterator<Eigen::Matrix<std::complex<T>, -1, 1>>& end)
+{
+    if (FloatOperator::IsApprox<T>((*root).imag(), (T).0, m_Tolerance))
+        InsertRealRoot(*root);
+    else
+        InsertComplexRoot(root,end);
+}
+
+template<typename T>
+inline void OpenMIMO::Polynomial<T>::InsertRealRoot(const std::complex<T>& root)
+{
+    Polynomial<T> temp;
+    temp = { 1.0, root.real() * (-1.0) };
+    *this *= temp;
+}
+
+template<typename T>
+inline void OpenMIMO::Polynomial<T>::InsertComplexRoot(pointer_based_stl_iterator<Eigen::Matrix<std::complex<T>, -1, 1>>& root, const pointer_based_stl_iterator<Eigen::Matrix<std::complex<T>, -1, 1>>& end)
+{
+    Polynomial<T> temp;
+    std::complex<T> first = *root;
+    temp = { 1.0, first.real() * (-2.0), first.real() * first.real() + first.imag()* first.imag()};
+    *this *= temp;
+}
+
+template<typename T>
+void OpenMIMO::Polynomial<T>::InitializePolynomial(const std::initializer_list<T>& elements)
+{
+    m_Polynomial.resize(elements.size());
+    size_t it = 0;
+    for (auto&& i : elements)
+    {
+        m_Polynomial(m_Polynomial.rows() - 1 - it) = i;
+        it++;
+    }
+    m_PolynomialLinear = true;
+}
