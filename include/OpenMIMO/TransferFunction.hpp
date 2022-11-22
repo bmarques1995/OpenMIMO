@@ -36,13 +36,17 @@ namespace OpenMIMO
 
 		const Polynomial<T>& GetNumerator() const;
 		const Polynomial<T>& GetDenominator() const;
+		T GetFinalValue() const;
+
+		static void FilterRoots(Eigen::Matrix<std::complex<T>, -1, 1>& roots);
+
 	private:
 		Polynomial<T> m_Numerator;
 		Polynomial<T> m_Denominator;
 
 		void Reset();
 		void ResetWithGain();
-		void FilterRoots(Eigen::Matrix<std::complex<T>, -1, 1>& roots);
+		
 
 		void Simplify();
 	};

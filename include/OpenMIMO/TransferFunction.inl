@@ -98,6 +98,12 @@ inline const OpenMIMO::Polynomial<T>& OpenMIMO::TransferFunction<T>::GetDenomina
 }
 
 template<typename T>
+inline T OpenMIMO::TransferFunction<T>::GetFinalValue() const
+{
+	return m_Numerator.GetPolynomial()(0) / m_Denominator.GetPolynomial()(0);
+}
+
+template<typename T>
 inline void OpenMIMO::TransferFunction<T>::Reset()
 {
 	T numGain = (m_Numerator.GetPolynomial()((size_t)(m_Numerator.GetPolynomial().size() - 1)));
