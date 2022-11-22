@@ -124,5 +124,5 @@ else()
     add_executable(OpenMIMOPlot ${PLOT_MIMO_HEADERS} ${PLOT_MIMO_SOURCES})
 endif()
 
-target_include_directories(OpenMIMOPlot PRIVATE ./OpenMIMOPlot IMPLOT_INCLUDE_DIR IMGUI_INCLUDE_DIR ./vendor/glfw/include ./vendor/glad/include ./vendor/nlohmann_json/include ./vendor/spdlog/include)
+target_include_directories(OpenMIMOPlot PRIVATE ./OpenMIMOPlot IMPLOT_INCLUDE_DIR IMGUI_INCLUDE_DIR ./vendor/glfw/include ./vendor/glad/include ./vendor/nlohmann_json/include ./vendor/spdlog/include ./include ./vendor/Eigen3)
 target_link_libraries(OpenMIMOPlot PRIVATE implot imgui glad glfw spdlog ${WinLibs})

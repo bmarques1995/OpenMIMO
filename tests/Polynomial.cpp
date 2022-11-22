@@ -60,6 +60,17 @@ namespace OpenMIMO
         ASSERT_TRUE(compare.isApprox(p.GetPolynomial()));
     }
 
+    TEST(Polynomial, PolynomialGain)
+    {
+        OpenMIMO::Polynomial<double> p({ 1, 5, 6 }, 1E-6);
+        double gain = 3.0;
+        p *= gain;
+        Eigen::VectorXd compare;
+        compare.resize(3);
+        compare << 18.0, 15.0, 3.0;
+        ASSERT_TRUE(compare.isApprox(p.GetPolynomial()));
+    }
+
     TEST(Polynomial, RealRoots)
     {
         OpenMIMO::Polynomial<double> p;

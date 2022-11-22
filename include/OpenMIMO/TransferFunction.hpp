@@ -25,15 +25,17 @@ namespace OpenMIMO
 		TransferFunction operator+(TransferFunction& t1);
 		TransferFunction operator-(TransferFunction& t1);
 		TransferFunction operator*(TransferFunction& t1);
+		TransferFunction operator*(T gain);
 		void operator+=(TransferFunction& t1);
 		void operator-=(TransferFunction& t1);
 		void operator*=(TransferFunction& t1);
+		void operator*=(T gain);
 		void operator=(const std::pair<std::initializer_list<T>, std::initializer_list<T>>& numeratorAndDenominator);
 		
 		bool IsApproximated(const TransferFunction& tf2);
 
-		const Eigen::Matrix<T, -1, 1>& GetNumerator() const;
-		const Eigen::Matrix<T, -1, 1>& GetDenominator() const;
+		const Polynomial<T>& GetNumerator() const;
+		const Polynomial<T>& GetDenominator() const;
 	private:
 		Polynomial<T> m_Numerator;
 		Polynomial<T> m_Denominator;

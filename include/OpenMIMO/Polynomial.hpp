@@ -23,9 +23,11 @@ namespace OpenMIMO
         Polynomial operator+(Polynomial& p1);
         Polynomial operator-(Polynomial& p1);
         Polynomial operator*(Polynomial& p1);
+        Polynomial operator*(T gain);
         void operator+=(Polynomial& p1);
         void operator-=(Polynomial& p1);
         void operator*=(Polynomial& p1);
+        void operator*=(T gain);
         void operator=(const std::initializer_list<T>& elements);
 
         const Eigen::Matrix<T, -1, 1>& GetPolynomial() const;

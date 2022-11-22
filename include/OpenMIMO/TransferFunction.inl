@@ -40,6 +40,15 @@ inline OpenMIMO::TransferFunction<T> OpenMIMO::TransferFunction<T>::operator*(Tr
 }
 
 template<typename T>
+inline OpenMIMO::TransferFunction<T> OpenMIMO::TransferFunction<T>::operator*(T gain)
+{
+	TransferFunction result;
+	result.m_Numerator = this->m_Numerator * gain;
+	result.m_Denominator = this->m_Denominator;
+	return result;
+}
+
+template<typename T>
 inline void OpenMIMO::TransferFunction<T>::operator+=(TransferFunction& t1)
 {
 	*this = *this + t1;
@@ -58,6 +67,12 @@ inline void OpenMIMO::TransferFunction<T>::operator*=(TransferFunction& t1)
 }
 
 template<typename T>
+inline void OpenMIMO::TransferFunction<T>::operator*=(T gain)
+{
+	*this = *this * gain;
+}
+
+template<typename T>
 inline void OpenMIMO::TransferFunction<T>::operator=(const std::pair<std::initializer_list<T>, std::initializer_list<T>>& numeratorAndDenominator)
 {
 	this->m_Numerator = numeratorAndDenominator.first;
@@ -67,19 +82,19 @@ inline void OpenMIMO::TransferFunction<T>::operator=(const std::pair<std::initia
 template<typename T>
 inline bool OpenMIMO::TransferFunction<T>::IsApproximated(const TransferFunction& tf2)
 {
-	return (GetNumerator().isApprox(tf2.GetNumerator(), 1e-5) && GetDenominator().isApprox(tf2.GetDenominator(), 1e-5));
+	return (GetNumerator().GetPolynomial().isApprox(tf2.GetNumerator().GetPolynomial(), 1e-5) && GetDenominator().GetPolynomial().isApprox(tf2.GetDenominator().GetPolynomial(), 1e-5));
 }
 
 template<typename T>
-inline const Eigen::Matrix<T, -1, 1>& OpenMIMO::TransferFunction<T>::GetNumerator() const
+inline const OpenMIMO::Polynomial<T>& OpenMIMO::TransferFunction<T>::GetNumerator() const
 {
-	return m_Numerator.GetPolynomial();
+	return m_Numerator;
 }
 
 template<typename T>
-inline const Eigen::Matrix<T, -1, 1>& OpenMIMO::TransferFunction<T>::GetDenominator() const
+inline const OpenMIMO::Polynomial<T>& OpenMIMO::TransferFunction<T>::GetDenominator() const
 {
-	return m_Denominator.GetPolynomial();
+	return m_Denominator;
 }
 
 template<typename T>
@@ -126,7 +141,7 @@ inline void OpenMIMO::TransferFunction<T>::FilterRoots(Eigen::Matrix<std::comple
 template<typename T>
 inline void OpenMIMO::TransferFunction<T>::Simplify()
 {
-	//obter interseção de conjuntos
+	//obter interseï¿½ï¿½o de conjuntos
 	auto numeratorRoots = m_Numerator.GetRoots();
 	auto denominatorRoots = m_Denominator.GetRoots();
 	ResetWithGain();
@@ -137,7 +152,7 @@ inline void OpenMIMO::TransferFunction<T>::Simplify()
 	for (; numIt != numeratorRoots.end() || denIt != denominatorRoots.end();)
 	{
 		Polynomial<T> temp;
-		//não se comporta bem com uma tolerância 1e-6
+		//nï¿½o se comporta bem com uma tolerï¿½ncia 1e-6
 		if(!FloatOperator::ComplexIsApprox(*numIt,*denIt,1.0E-5) && numIt != numeratorRoots.end() && denIt != denominatorRoots.end())
 		{
 			if(FloatOperator::ComplexIsGreater(*numIt, *denIt,1.0E-5))

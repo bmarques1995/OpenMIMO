@@ -70,6 +70,21 @@ inline OpenMIMO::Polynomial<T> OpenMIMO::Polynomial<T>::operator*(Polynomial& p1
 }
 
 template<typename T>
+inline OpenMIMO::Polynomial<T> OpenMIMO::Polynomial<T>::operator*(T gain)
+{
+    Polynomial result;
+    if (((size_t)this->m_Polynomial.rows() != 0)) {
+        result.m_Polynomial.resize(this->m_Polynomial.rows());
+        result.m_Polynomial.setZero();
+        for (size_t i = 0; i < (size_t)this->m_Polynomial.rows(); i++)
+        {
+            result.m_Polynomial(i) += this->m_Polynomial(i) * gain;
+        }
+    }
+    return result;
+}
+
+template<typename T>
 inline void OpenMIMO::Polynomial<T>::operator+=(Polynomial& p1)
 {
     *this = *this + p1;
@@ -88,6 +103,12 @@ inline void OpenMIMO::Polynomial<T>::operator*=(Polynomial& p1)
 }
 
 template<typename T>
+inline void OpenMIMO::Polynomial<T>::operator*=(T gain)
+{
+    *this = (*this) * gain;
+}
+
+template<typename T>
 inline void OpenMIMO::Polynomial<T>::operator=(const std::initializer_list<T>& elements)
 {
     this->InitializePolynomial(elements);
@@ -100,13 +121,13 @@ inline const Eigen::Matrix<T, -1, 1>& OpenMIMO::Polynomial<T>::GetPolynomial() c
 }
 
 template<typename T>
-const size_t OpenMIMO::Polynomial<T>::GetPolynomialSize() const
+inline const size_t OpenMIMO::Polynomial<T>::GetPolynomialSize() const
 {
     return (size_t) m_Polynomial.rows();
 }
 
 template<typename T>
-Eigen::Matrix<std::complex<T>, -1, 1> OpenMIMO::Polynomial<T>::GetRoots() const
+inline Eigen::Matrix<std::complex<T>, -1, 1> OpenMIMO::Polynomial<T>::GetRoots() const
 {
     Eigen::Matrix<T, -1, -1> rootsMatrix;
     rootsMatrix.resize((size_t) m_Polynomial.rows() - 1, (size_t) m_Polynomial.rows() - 1);
@@ -153,7 +174,7 @@ inline void OpenMIMO::Polynomial<T>::InsertComplexRoot(pointer_based_stl_iterato
 }
 
 template<typename T>
-void OpenMIMO::Polynomial<T>::InitializePolynomial(const std::initializer_list<T>& elements)
+inline void OpenMIMO::Polynomial<T>::InitializePolynomial(const std::initializer_list<T>& elements)
 {
     m_Polynomial.resize(elements.size());
     size_t it = 0;

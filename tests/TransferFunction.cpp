@@ -15,6 +15,16 @@ namespace OpenMIMO
 		ASSERT_TRUE(expectedOutput.IsApproximated(output));
 	}
 
+	TEST(TransferFunction, Gain)
+	{
+		TransferFunction<double> output({ 1, 5 }, { 1, 5, 6 });
+		double gain = 5.0;
+		output *= gain;
+		TransferFunction<double> expectedOutput;
+		expectedOutput = std::make_pair<std::initializer_list<double>, std::initializer_list<double>>({ 5, 25 }, { 1, 5, 6 });
+		ASSERT_TRUE(expectedOutput.IsApproximated(output));
+	}
+
 	TEST(TransferFunction, Add)
 	{
 		TransferFunction<double> output({ 1, 5 }, { 1, 14, 61, 104 });

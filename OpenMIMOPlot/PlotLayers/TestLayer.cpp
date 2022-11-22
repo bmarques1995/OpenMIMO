@@ -32,14 +32,15 @@ void OpenMIMO::TestLayer::OnUpdate()
 void OpenMIMO::TestLayer::ImGUIRender()
 {
     //Only for tests will be removed from here
+    ImPlot::ShowDemoWindow();
     ImPlot::ShowStyleEditor();
 
     ImGui::Begin("My Window");
     if (ImPlot::BeginPlot("My Plot")) {
         ImPlot::SetupAxesLimits(8,-8,-4.5,4.5);
+        ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 1.0f);
+        ImPlot::SetNextMarkerStyle(ImPlotMarker_Cross, 6, ImPlot::GetColormapColor(1), IMPLOT_AUTO, ImPlot::GetColormapColor(25));
         ImPlot::PlotScatter<double>("Data 1", real_poles, imag_poles, 3);
-        ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
-        ImPlot::SetNextMarkerStyle(ImPlotMarker_Square, 6, ImPlot::GetColormapColor(1), IMPLOT_AUTO, ImPlot::GetColormapColor(25));
         ImPlot::PopStyleVar();
         ImPlot::EndPlot();
     }
