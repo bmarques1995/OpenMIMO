@@ -7,8 +7,9 @@ OpenMIMO::AppContainer::AppContainer() :
     Application()
 {
     TransferFunction<double> plant({ 1 }, {1, 15, 59, 45});
-    PushLayer(new TestLayer());
-    PushLayer(new BodeLayer());
+    TransferFunction<double> bodePlant({ 1 }, {1, 6, 5});
+    //PushLayer(new TestLayer());
+    PushLayer(new BodeLayer(bodePlant));
     PushLayer(new RootLocusLayer(plant));
 }
 

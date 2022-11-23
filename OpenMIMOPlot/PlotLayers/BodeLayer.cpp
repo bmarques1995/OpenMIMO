@@ -7,9 +7,10 @@ void OpenMIMO::BodeLayer::ImGUIRender()
     ImGui::Begin("Bode Diagram");
     if (ImGui::BeginTabBar("Diagrams")) {
         if (ImGui::BeginTabItem("Magnitude")) {
-            if (ImPlot::BeginPlot("My Plot")) {
-                ImPlot::SetupAxesLimits(8, -8, -4.5, 4.5);
-                ImPlot::PlotScatter<double>("Data 1", real_poles, imag_poles, 3);
+            if (ImPlot::BeginPlot("Module")) {
+                ImPlot::SetupAxisScale(ImAxis_X1, ImPlotScale_Log10);
+                ImPlot::SetupAxesLimits(0.1, 100, 2, -80);
+                ImPlot::PlotLine<double>("Data 1", m_PlotPoints.GetColumn(0).data(), m_PlotPoints.GetColumn(1).data(), m_PlotPoints.GetColumn(0).size());
                 ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
                 ImPlot::SetNextMarkerStyle(ImPlotMarker_Square, 6, ImPlot::GetColormapColor(1), IMPLOT_AUTO, ImPlot::GetColormapColor(25));
                 ImPlot::PopStyleVar();
@@ -18,11 +19,12 @@ void OpenMIMO::BodeLayer::ImGUIRender()
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Phase")) {
-            if (ImPlot::BeginPlot("My Plot")) {
-                ImPlot::SetupAxesLimits(8, -8, -4.5, 4.5);
-                ImPlot::PlotLine<double>("Data 1", real_poles, imag_poles, 3);
+            if (ImPlot::BeginPlot("Angle")) {
+                ImPlot::SetupAxisScale(ImAxis_X1, ImPlotScale_Log10);
+                ImPlot::SetupAxesLimits(0.1, 100, 90, -180);
+                ImPlot::PlotLine<double>("Data 1", m_PlotPoints.GetColumn(0).data(), m_PlotPoints.GetColumn(2).data(), m_PlotPoints.GetColumn(0).size());
                 ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
-                ImPlot::SetNextMarkerStyle(ImPlotMarker_Square, 6, ImPlot::GetColormapColor(1), IMPLOT_AUTO, ImPlot::GetColormapColor(25));
+                ImPlot::SetNextMarkerStyle(ImPlotMarker_Cross, 6, ImPlot::GetColormapColor(1), IMPLOT_AUTO, ImPlot::GetColormapColor(25));
                 ImPlot::PopStyleVar();
                 ImPlot::EndPlot();
             }
@@ -33,17 +35,23 @@ void OpenMIMO::BodeLayer::ImGUIRender()
     ImGui::End();
 }
 
-OpenMIMO::BodeLayer::BodeLayer()
+void OpenMIMO::BodeLayer::CastBodeToVector(const std::complex<double>& bode, double frequency)
 {
-    std::complex<double> poles[3];
-    poles[0] = { -3,0 };
-    poles[1] = { -5,7 };
-    poles[2] = { -5,-7 };
+    m_Cast[0] = frequency;
+    m_Cast[1] = bode.real();
+    m_Cast[2] = (bode.imag())*180/acos(-1);
+}
 
-    for (size_t i = 0; i < 3; i++)
+OpenMIMO::BodeLayer::BodeLayer(const TransferFunction<double>& plant) :
+    m_Bode(plant)
+{
+    m_PlotPoints.Start(1, 3);
+    m_Cast.resize(3);
+
+    for (size_t i = 0; i < 60000; i++)
     {
-        real_poles[i] = poles[i].real();
-        imag_poles[i] = poles[i].imag();
+        CastBodeToVector(m_Bode.GetBodeValues(i*.01),i*.01);
+        m_PlotPoints.PushRow(m_Cast);
     }
 }
 

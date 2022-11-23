@@ -2,20 +2,26 @@
 #define BODE_LAYER_HPP
 
 #include "Core/Layer.hpp"
+#include "Utils/PointCloud.hpp"
 #include <complex>
+#include <OpenMIMO/BodeContainer.hpp>
+
 
 namespace OpenMIMO
 {
     class BodeLayer : public Layer
     {
     private:
-        double real_poles[3];
-        double imag_poles[3];
-        int bar_data[11] = { 5,9,7,3,14,25,63,17,81,19,105 };
+        BodeContainer<double> m_Bode;
+        PointCloud<double> m_PlotPoints;
 
         void ImGUIRender();
+
+        std::vector<double> m_Cast;
+
+        void CastBodeToVector(const std::complex<double>& bode, double frequency);
     public:
-        BodeLayer();
+        BodeLayer(const TransferFunction<double>& plant);
         ~BodeLayer();
 
         virtual void OnAttach() override;
