@@ -1,0 +1,38 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/OpenMIMOPlot",
+                "${workspaceFolder}/vendor/Eigen3",
+                "${workspaceFolder}/vendor/glfw/include",
+                "${workspaceFolder}/vendor/imgui",
+                "${workspaceFolder}/vendor/nlohmann_json/include",
+                "${workspaceFolder}/vendor/spdlog/include",
+                "${workspaceFolder}/vendor/googletest/googlemock/include",
+                "${workspaceFolder}/vendor/googletest/googletest/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/vendor/Eigen3",
+                "${workspaceFolder}/vendor/googletest/googlemock/include",
+                "${workspaceFolder}/vendor/googletest/googletest/include"
+            ],
+            "defines": [],
+            "compilerPath": "cl.exe",
+            "cStandard": "gnu17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64"
+        }
+    ],
+    "version": 4
+}
