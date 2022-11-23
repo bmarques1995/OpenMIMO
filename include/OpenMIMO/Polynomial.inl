@@ -133,17 +133,29 @@ inline Eigen::Matrix<std::complex<T>, -1, 1> OpenMIMO::Polynomial<T>::GetRoots()
     rootsMatrix.resize((size_t) m_Polynomial.rows() - 1, (size_t) m_Polynomial.rows() - 1);
     rootsMatrix.setZero();
 
-    for(size_t i = 0; i < (size_t)rootsMatrix.rows() - 1; ++i)
+    for(size_t i = 0; i < (size_t)(rootsMatrix.rows() - 1); ++i)
     {
+        if (((size_t)rootsMatrix.rows() == 0) || ((size_t)rootsMatrix.cols() == 0))
+            break;
         rootsMatrix(i, i +1) = (T)1.0;
     }
 
     for(size_t i = 0, rowsMatrixA = (size_t)(m_Polynomial.rows() - 1); i < rowsMatrixA; ++i)
     {
-        rootsMatrix(rowsMatrixA - 1, i) = (T)-1.0 * m_Polynomial(i)/m_Polynomial(rowsMatrixA);
+        if (((size_t)rootsMatrix.rows() > 0) && ((size_t)rootsMatrix.cols() > 0))
+            rootsMatrix(rowsMatrixA - 1, i) = (T)-1.0 * m_Polynomial(i)/m_Polynomial(rowsMatrixA);
     }
-    Eigen::Matrix<std::complex<T>, -1, 1> roots = rootsMatrix.eigenvalues();
-    Sorter::Sort(roots.begin(), roots.end(), FloatOperator::ComplexIsLess<double>, (size_t)roots.size());
+
+    Eigen::Matrix<std::complex<T>, -1, 1> roots;
+    if (((size_t)rootsMatrix.rows() > 0) && ((size_t)rootsMatrix.cols() > 0))
+    {
+        roots = rootsMatrix.eigenvalues();
+        Sorter::Sort(roots.begin(), roots.end(), FloatOperator::ComplexIsLess<double>, (size_t)roots.size());
+    }
+    else
+    {
+        roots.resize(0);
+    }
     return roots;
 }
 
