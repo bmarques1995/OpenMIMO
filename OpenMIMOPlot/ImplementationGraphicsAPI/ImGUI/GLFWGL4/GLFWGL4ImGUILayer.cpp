@@ -25,7 +25,7 @@ void OpenMIMO::GLFWGL4ImGUILayer::OnAttach()
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsLight();
 
     ImGui_ImplGlfw_InitForOpenGL(m_WindowPtr, true);
     ImGui_ImplOpenGL3_Init();

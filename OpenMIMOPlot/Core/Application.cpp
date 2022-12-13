@@ -53,8 +53,10 @@ OpenMIMO::Application::Application()
 
     json startupJson = ApplicationStarter::GetStartupJson();
 
+    WindowProps props(960, 540, "OpenMIMOPlot");
+
     std::pair<std::string, std::string> APIs = { startupJson["WindowAPI"].get<std::string>() , startupJson["GraphicsAPI"].get<std::string>() };
-    GraphicsStartup startup =  m_GraphicsInjector->GetGraphics(APIs, m_EventDispatcher);
+    GraphicsStartup startup =  m_GraphicsInjector->GetGraphics(APIs, m_EventDispatcher, props);
 
     m_WindowController = startup.Controller;
     m_GraphicsContext = startup.Context;
@@ -70,7 +72,7 @@ OpenMIMO::Application::Application()
     if (m_ImGUILayer == nullptr)
         exit(3);
 
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    ImVec4 clear_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
     m_GraphicsContext->SetClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
     m_ImGUILayer->OnAttach();

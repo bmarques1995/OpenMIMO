@@ -12,6 +12,7 @@ void OpenMIMO::BodeLayer::ImGUIRender()
                 ImPlot::SetupAxesLimits(0.1, 100, 2, -80);
                 ImPlot::PlotLine<double>("Data 1", m_PlotPoints.GetColumn(0).data(), m_PlotPoints.GetColumn(1).data(), m_PlotPoints.GetColumn(0).size());
                 ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
+                ImPlot::PushStyleVar(ImPlotStyleVar_PlotDefaultSize, ImVec2(800, 450));
                 ImPlot::SetNextMarkerStyle(ImPlotMarker_Square, 6, ImPlot::GetColormapColor(1), IMPLOT_AUTO, ImPlot::GetColormapColor(25));
                 ImPlot::PopStyleVar();
                 ImPlot::EndPlot();
@@ -24,6 +25,7 @@ void OpenMIMO::BodeLayer::ImGUIRender()
                 ImPlot::SetupAxesLimits(0.1, 100, 90, -180);
                 ImPlot::PlotLine<double>("Data 1", m_PlotPoints.GetColumn(0).data(), m_PlotPoints.GetColumn(2).data(), m_PlotPoints.GetColumn(0).size());
                 ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
+                ImPlot::PushStyleVar(ImPlotStyleVar_PlotDefaultSize, ImVec2(800, 450));
                 ImPlot::SetNextMarkerStyle(ImPlotMarker_Cross, 6, ImPlot::GetColormapColor(1), IMPLOT_AUTO, ImPlot::GetColormapColor(25));
                 ImPlot::PopStyleVar();
                 ImPlot::EndPlot();

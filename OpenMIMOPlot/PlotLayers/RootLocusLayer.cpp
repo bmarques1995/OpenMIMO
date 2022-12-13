@@ -14,7 +14,8 @@ void OpenMIMO::RootLocusLayer::ImGUIRender()
 					ImPlot::PlotLine<double>("Data 1", m_PlotPoints.GetColumn(2*i).data(), m_PlotPoints.GetColumn(2*i+1).data(), m_PlotPoints.GetColumn(0).size());
 				}
                 
-                ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
+				ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
+				ImPlot::PushStyleVar(ImPlotStyleVar_PlotDefaultSize, ImVec2(800, 450));
                 ImPlot::SetNextMarkerStyle(ImPlotMarker_Square, 6, ImPlot::GetColormapColor(1), IMPLOT_AUTO, ImPlot::GetColormapColor(25));
                 ImPlot::PopStyleVar();
                 ImPlot::EndPlot();
@@ -33,9 +34,9 @@ OpenMIMO::RootLocusLayer::RootLocusLayer(const TransferFunction<double>& plant) 
 	m_PlotPoints.Start(numberOfRoots, 2);
 	m_Cast.resize(numberOfRoots * 2);
 	
-	for (size_t i = 0; i < 6000; i++)
+	for (size_t i = 0; i < 600000; i++)
 	{
-		CastEigenToVector(m_RootLocus.GetRootLocus(i));
+		CastEigenToVector(m_RootLocus.GetRootLocus(i*.01));
 		m_PlotPoints.PushRow(m_Cast);
 	}
 }
