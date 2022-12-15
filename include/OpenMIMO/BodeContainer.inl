@@ -64,7 +64,7 @@ inline std::complex<T> OpenMIMO::BodeContainer<T>::GetBodeValues(T frequency)
 			else
 			{
 				T lastTerm = m_Poles(i).real() * m_Poles(i).real() + m_Poles(i).imag() * m_Poles(i).imag();
-				currentBode = std::complex<T>(lastTerm - (frequency * frequency), (T)2.0 * frequency * m_Zeros(i).real());
+				currentBode = std::complex<T>(lastTerm - (frequency * frequency), (T)2.0 * frequency * m_Poles(i).real());
 				currentBode = ToPolar(currentBode);
 				bode = std::complex<T>(bode.real() - 20 * log10(currentBode.real()) + 20 * log10(lastTerm), bode.imag() - currentBode.imag());
 			}
